@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arturocg96/teacherapp-backend.git"
+    "url": "git+https://github.com/abravo83/teacherapp-backend.git"
   },
   "author": "Grupo 1 Máster Full Stack Developer UNIR",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/arturocg96/teacherapp-backend/issues"
+    "url": "https://github.com/abravo83/teacherapp-backend/issues"
   },
-  "homepage": "https://github.com/arturocg96/teacherapp-backend#readme",
+  "homepage": "https://github.com/abravo83/teacherapp-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
