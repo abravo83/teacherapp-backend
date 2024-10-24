@@ -29,7 +29,7 @@ Este endpoint permite registrar un nuevo usuario (profesor o alumno) en la plata
 URL: /api/users/register
 MÉTODO: POST
 HEADERS: X
-BODY: user, email, password, rol, foto. Si el rol es profesor, también incluir: teléfono, precio_hora, ubicación y meses_experiencia. + MATERIAS
+BODY: username, email, password, rol. CAMPOS BÁSICOS Y LUEGO COMPLETAMOS CON UPDATE?
 
 Respuesta:
 - Respondemos con el nuevo registro creado
@@ -41,14 +41,14 @@ Este endpoint permite actualizar la información de un usuario existente. Si el 
 URL: /api/users/:IDUser
 MÉTODO: PUT
 HEADERS: X
-BODY: user, email, password, rol, foto. Si el rol es profesor, también incluir: teléfono, precio_hora, ubicación y meses_experiencia. + MATERIAS
+BODY: user, name, surname, email, password, rol, foto. Si el rol es profesor, también incluir: teléfono, precio_hora, ubicación y meses_experiencia. + MATERIAS
 
 Respuesta:
 
 Se responde con la confirmación de la actualización de los datos del profesor. 
 
 
-## DELETE TEACHER
+## DELETE USER
 Este endpoint permite eliminar (o dar de baja) a un profesor específico.
 
 URL: /api/users/:IDUser
@@ -61,3 +61,17 @@ Respuesta:
 Se responde con la confirmación de que el usuario ha sido eliminado (o dado de baja).
 
 
+## VALIDATE USER
+
+Este endpoint permite que los administradores validen a los usuarios registrados (generalmente profesores), habilitándolos para aparecer en el directorio o tener acceso a funcionalidades específicas de la plataforma.
+
+URL: /api/users/validate/:IDUser
+MÉTODO: PUT
+HEADERS: Debe incluir un token de autenticación que verifique que el usuario es administrador.
+BODY: X
+
+Restricciones: Solo los usuarios con el rol de administrador pueden acceder a este endpoint
+
+Respuesta:
+
+Se responde con la confirmación de que el usuario ha sido validado.
