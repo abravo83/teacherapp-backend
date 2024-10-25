@@ -1,5 +1,4 @@
-// Description: This file is the entry point for the application.
-// It creates the server and listens on the specified port.
+// Description: Main entry point for the application.
 const http = require('http');
 const app = require('./src/app');
 

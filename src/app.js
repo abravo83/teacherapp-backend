@@ -1,3 +1,4 @@
+//CREATING THE EXPRESS APP
 const express = require('express');
 const cors = require('cors');
 

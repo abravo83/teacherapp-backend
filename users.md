@@ -6,6 +6,10 @@ MÉTODO: GET
 HEADERS: X
 BODY: X
 
+Restricciones:
+
+- 
+
 Respuesta:
 
 - Se responde con el listado de usuarios que tienen el rol especificado (profesor o alumno).
@@ -17,6 +21,10 @@ URL: /api/users/:IDUser
 MÉTODO: GET
 HEADERS: X
 BODY: X
+
+Restricciones:
+
+- 
 
 Respuesta:
 
@@ -31,8 +39,28 @@ MÉTODO: POST
 HEADERS: X
 BODY: username, email, password, rol. CAMPOS BÁSICOS Y LUEGO COMPLETAMOS CON UPDATE?
 
+Restricciones:
+
+- Accesible para cualquier usuario que quiera registrarse.
+
 Respuesta:
 - Respondemos con el nuevo registro creado
+
+## LOGIN
+Este endpoint permite a los usuarios registrados (administradores, profesores o alumnos) iniciar sesión en la plataforma. Al recibir las credenciales, se verifica la autenticidad y, si son correctas, se genera un token de autenticación que permite acceder a las funcionalidades protegidas de la plataforma.
+
+URL: /api/users/login
+MÉTODO: POST
+HEADERS: X
+BODY: email, password
+
+Restricciones:
+
+- Accesible para cualquier usuario.
+
+Respuesta:
+- Si las credenciales son válidas, se devuelve un token JWT (JSON Web Token) para autenticación y el perfil básico del usuario (por ejemplo, id, rol, nombre).
+- Si las credenciales no son válidas, se devuelve un mensaje de error indicando que el email o la contraseña son incorrectos.
 
 
 ## UPDATE USER
@@ -43,18 +71,26 @@ MÉTODO: PUT
 HEADERS: X
 BODY: user, name, surname, email, password, rol, foto. Si el rol es profesor, también incluir: teléfono, precio_hora, ubicación y meses_experiencia. + MATERIAS
 
+Restricciones:
+
+- Solo accesible para el propio usuario registrado y logeado que está actualizando su propia información o para usuarios con el rol administrador.
+
 Respuesta:
 
-Se responde con la confirmación de la actualización de los datos del profesor. 
+- Se responde con la confirmación de la actualización de los datos del profesor. 
 
 
 ## DELETE USER
-Este endpoint permite eliminar (o dar de baja) a un profesor específico.
+Este endpoint permite eliminar (o dar de baja) a un profesor o alumno específico.
 
 URL: /api/users/:IDUser
 MÉTODO: DELETE
 HEADERS: X
 BODY: X
+
+Restricciones:
+
+- Solo accesible para usuarios con el rol de administrador, o para los usuarios registrados y logeados que quieran borrar su cuenta.
 
 Respuesta:
 
