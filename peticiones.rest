@@ -2,3 +2,59 @@
 
 ###
 GET {{url}}/users
+
+
+#####################
+#####Profesores######
+#####################
+# Obtener un profesor por ID
+GET {{url}}/profesores/1
+Content-Type: application/json
+
+###
+# Registrar un nuevo profesor
+POST {{url}}/profesores/registro
+Content-Type: application/json
+
+{
+    "usuario": {
+        "nombre": "Juan",
+        "apellidos": "Pérez",
+        "email": "juan.perez@example.com",
+        "password": "Password123",
+        "foto": "http://example.com/profile.jpg",
+        "activo": true
+    },
+    "profesor": {
+        "precio_hora": 20,
+        "localizacion": "Madrid",
+        "telefono": "123456789",
+        "meses_experiencia": 36,
+        "validado": false
+    },
+    "materias": [1, 2, 3]
+}
+
+###
+# Actualizar un profesor existente
+PUT {{url}}/profesores/1
+Content-Type: application/json
+
+{
+    "usuario": {
+        "nombre": "Juan",
+        "apellidos": "Pérez",
+        "email": "juan.perez@example.com",
+        "password": "NewPassword123",
+        "foto": "http://example.com/updated_profile.jpg",
+        "activo": true
+    },
+    "profesor": {
+        "precio_hora": 25,
+        "localizacion": "Barcelona",
+        "telefono": "987654321",
+        "meses_experiencia": 48,
+        "validado": true
+    },
+    "materias": [1, 3]
+}
