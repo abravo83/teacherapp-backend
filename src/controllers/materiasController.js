@@ -1,4 +1,4 @@
-const { selectAllMaterias, selectMateriasByProfesorId } = require('../models/materiaModel');
+const { selectAllMaterias, selectMateriasByProfesorId } = require('../models/materiasModel');
 
 const obtenerMaterias = async (req, res, next) => {
     try {
