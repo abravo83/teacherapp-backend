@@ -1,11 +1,9 @@
 const pool = require('../config/db');
-const bcrypt = require('bcryptjs');
 
 async function insertProfesor({ usuario, profesor, materias }) {
-    const hashedPassword = await bcrypt.hash(usuario.password, 8);
     const [usuarioResult] = await pool.query(
         'INSERT INTO usuarios (nombre, apellidos, email, password, rol, foto, activo) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [usuario.nombre, usuario.apellidos, usuario.email, hashedPassword, 'profesor', usuario.foto, 1]
+        [usuario.nombre, usuario.apellidos, usuario.email, usuario.password, 'profesor', usuario.foto, 1]
     );
     const usuarioId = usuarioResult.insertId;
 
@@ -19,15 +17,13 @@ async function insertProfesor({ usuario, profesor, materias }) {
         await pool.query('INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?', [values]);
     }
 
-    return await selectProfesorById(usuarioId);
+    return usuarioId;
 }
 
 async function updateProfesor(profesorId, { usuario, profesor, materias }) {
-    const hashedPassword = usuario.password ? await bcrypt.hash(usuario.password, 8) : null;
-
     await pool.query(
         'UPDATE usuarios SET nombre = ?, apellidos = ?, email = ?, password = COALESCE(?, password), foto = ?, activo = ? WHERE id = ?',
-        [usuario.nombre, usuario.apellidos, usuario.email, hashedPassword, usuario.foto, usuario.activo, profesorId]
+        [usuario.nombre, usuario.apellidos, usuario.email, usuario.password, usuario.foto, usuario.activo, profesorId]
     );
 
     await pool.query(
@@ -41,7 +37,7 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
         await pool.query('INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?', [values]);
     }
 
-    return await selectProfesorById(profesorId);
+    return profesorId;
 }
 
 async function selectProfesorById(profesorId) {
@@ -67,12 +63,12 @@ async function selectProfesorById(profesorId) {
     };
 }
 
-
 module.exports = {
     insertProfesor,
     updateProfesor,
     selectProfesorById,
 };
+
 
 
 //SERVICIO FRONTEND

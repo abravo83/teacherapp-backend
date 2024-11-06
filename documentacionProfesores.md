@@ -1,4 +1,4 @@
-# Documentación - Funcionalidad de Profesores
+# Documentación - Profesores
 
 ## Endpoints
 

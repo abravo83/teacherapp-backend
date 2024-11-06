@@ -1,4 +1,4 @@
-# Documentación - Funcionalidad de Materias
+# Documentación - Materias
 
 ## Endpoints
 

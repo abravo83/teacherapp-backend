@@ -28,7 +28,29 @@ async function checkRolProfesor(req, res, next) {
     }
 }
 
+async function checkRolAlumno(req, res, next) {
+    const alumnoId = req.params.id || req.body.id;
+
+    if (!alumnoId) {
+        return res.status(400).json({ message: 'ID de alumno no proporcionado' });
+    }
+
+    try {
+        const [usuario] = await pool.query('SELECT rol FROM usuarios WHERE id = ?', [alumnoId]);
+        
+        if (usuario.length === 0 || usuario[0].rol !== 'alumno') {
+            return res.status(403).json({ message: 'Acceso denegado: el usuario no es un alumno' });
+        }
+
+        next();
+    } catch (error) {
+        res.status(500).json({ message: 'Error al verificar el rol de alumno' });
+    }
+}
+
+
+
 
 module.exports = {
-    checkToken, checkRolProfesor
+    checkToken, checkRolProfesor, checkRolAlumno
 }

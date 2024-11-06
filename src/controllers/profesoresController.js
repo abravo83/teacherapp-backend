@@ -1,4 +1,5 @@
 const { insertProfesor, updateProfesor, selectProfesorById } = require('../models/profesorModel');
+const bcrypt = require('bcryptjs');
 
 const obtenerProfesor = async (req, res, next) => {
     try {
@@ -14,8 +15,10 @@ const obtenerProfesor = async (req, res, next) => {
 
 const registroProfesor = async (req, res, next) => {
     try {
-        const nuevoProfesor = await insertProfesor(req.body);
-        res.json(nuevoProfesor);
+        req.body.usuario.password = await bcrypt.hash(req.body.usuario.password, 8);
+        const profesorId = await insertProfesor(req.body);
+        const profesor = await selectProfesorById(profesorId);
+        res.json(profesor);
     } catch (error) {
         next(error);
     }
@@ -23,11 +26,14 @@ const registroProfesor = async (req, res, next) => {
 
 const actualizarProfesor = async (req, res, next) => {
     try {
+        if (req.body.usuario.password) {
+            req.body.usuario.password = await bcrypt.hash(req.body.usuario.password, 8);
+        }
         const profesorActualizado = await updateProfesor(req.params.id, req.body);
         if (!profesorActualizado) {
             return res.status(404).json({ message: 'Profesor no encontrado' });
         }
-        res.json(profesorActualizado);
+        res.json(await selectProfesorById(profesorActualizado));
     } catch (error) {
         next(error);
     }
