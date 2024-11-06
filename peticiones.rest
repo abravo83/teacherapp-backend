@@ -1,12 +1,13 @@
 @url = http://localhost:3000/api
 
-###
+### Usuarios
+# Obtener todos los usuarios
 GET {{url}}/users
 
+#####################
+##### Profesores ####
+#####################
 
-#####################
-#####Profesores######
-#####################
 # Obtener un profesor por ID
 GET {{url}}/profesores/1
 Content-Type: application/json
@@ -58,3 +59,45 @@ Content-Type: application/json
     },
     "materias": [1, 3]
 }
+
+#####################
+###### Alumnos ######
+#####################
+
+# Obtener un alumno por ID
+GET {{url}}/alumnos/1
+
+# Registrar un nuevo alumno
+POST {{url}}/alumnos/registro
+Content-Type: application/json
+
+{
+  "nombre": "Lucia",
+  "apellidos": "Gonzalez",
+  "email": "lucia@email.com",
+  "password": "Password123",
+  "foto": "https://student-image-url.jpg"
+}
+
+# Actualizar un alumno existente
+PUT {{url}}/alumnos/1
+Content-Type: application/json
+
+{
+  "nombre": "Lucia",
+  "apellidos": "Gonzalez",
+  "email": "lucia@email.com",
+  "password": "NewPassword123",
+  "foto": "https://new-student-image-url.jpg",
+  "activo": true
+}
+
+#####################
+###### Materias #####
+#####################
+
+# Obtener todas las materias
+GET {{url}}/materias
+
+# Obtener materias asignadas a un profesor por ID de profesor
+GET {{url}}/materias/profesor-materias/1

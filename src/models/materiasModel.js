@@ -16,26 +16,11 @@ async function selectMateriasByProfesorId(profesorId) {
     return materias;
 }
 
-async function insertMateria(nombre) {
-    const [result] = await pool.query(
-        'INSERT INTO materias (nombre) VALUES (?)',
-        [nombre]
-    );
-    return { id: result.insertId, nombre };
-}
-
-async function insertMateriasForProfesor(profesorId, materias) {
-    const values = materias.map((materiaId) => [profesorId, materiaId]);
-    await pool.query('INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?', [values]);
-    return await selectMateriasByProfesorId(profesorId);
-}
-
 module.exports = {
     selectAllMaterias,
     selectMateriasByProfesorId,
-    insertMateria,
-    insertMateriasForProfesor,
 };
+
 
 
 // //Servicio frontend:
