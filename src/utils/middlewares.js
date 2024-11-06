@@ -5,7 +5,34 @@ const jwt = require('jsonwebtoken');
 
 
 const checkToken = async (req, res, next) => {
-  
+    if (!req.headers['authorization']) {
+        return res.status(403).json({ message: 'Debes incluir la cabecera de Authorization' });
+    }
+
+    const token = req.headers['authorization'];
+
+    let data;
+    try {
+        data = jwt.verify(token, process.env.CLAVE);
+    } catch (error) {
+        return res.status(403).json({ message: 'El token es incorrecto' });
+    }
+
+    const usuario = await selectStaffById(data.usuario_id);
+    if (!usuario) {
+        return res.status(403).json({ message: 'El usuario no existe' });
+    }
+
+    req.user = usuario;
+
+    next();
+}
+
+const checkAdmin = (req, res, next) => {
+    if (req.user.rol !== 'admin') {
+        return res.status(403).json({ message: 'Debes ser administrador' });
+    }
+    next();
 }
 
 async function checkRolProfesor(req, res, next) {

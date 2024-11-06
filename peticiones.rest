@@ -101,3 +101,14 @@ GET {{url}}/materias
 
 # Obtener materias asignadas a un profesor por ID de profesor
 GET {{url}}/materias/profesor-materias/1
+
+
+
+###
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "email": "juan.perez@example.com",
+  "password": "Password123"
+}
