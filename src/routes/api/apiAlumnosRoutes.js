@@ -12,6 +12,11 @@ const {
 
 router.get("/:id", checkRolAlumno, obtenerAlumno);
 router.post("/registro", uploadToImgProfile.single("imagen"), registroAlumno);
-router.put("/:id", checkRolAlumno, actualizarAlumno);
+router.put(
+  "/:id",
+  checkRolAlumno,
+  uploadToImgProfile.single("imagen"),
+  actualizarAlumno
+);
 
 module.exports = router;
