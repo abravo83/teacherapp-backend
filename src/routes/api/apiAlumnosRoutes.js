@@ -5,18 +5,10 @@ const {
   registroAlumno,
   actualizarAlumno,
 } = require("../../controllers/alumnosController");
-const {
-  checkRolAlumno,
-  uploadToImgProfile,
-} = require("../../utils/middlewares");
+const { uploadToImgProfile } = require("../../utils/middlewares");
 
-router.get("/:id", checkRolAlumno, obtenerAlumno);
+router.get("/:id", obtenerAlumno);
 router.post("/registro", uploadToImgProfile.single("imagen"), registroAlumno);
-router.put(
-  "/:id",
-  checkRolAlumno,
-  uploadToImgProfile.single("imagen"),
-  actualizarAlumno
-);
+router.put("/:id", uploadToImgProfile.single("imagen"), actualizarAlumno);
 
 module.exports = router;

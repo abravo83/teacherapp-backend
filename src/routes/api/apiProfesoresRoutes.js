@@ -5,15 +5,13 @@ const {
   actualizarProfesor,
 } = require("../../controllers/profesoresController");
 const {
-  checkRolProfesor,
   uploadToImgProfile,
 } = require("../../utils/middlewares");
 
-router.get("/:id", checkRolProfesor, obtenerProfesor);
+router.get("/:id", obtenerProfesor);
 router.post("/registro", uploadToImgProfile.single("imagen"), registroProfesor);
 router.put(
   "/:id",
-  checkRolProfesor,
   uploadToImgProfile.single("imagen"),
   actualizarProfesor
 );
