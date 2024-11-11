@@ -15,7 +15,12 @@
 
 - URL: `POST /api/alumnos/registro`
 - Descripción: Registra un nuevo alumno con sus datos de usuario.
-- Body: JSON con los campos `nombre`, `apellidos`, `email`, `password`, y `foto`.
+- Body: Debe enviarse en formato `multipart/form-data` para permitir el envío de archivos. Incluye los campos:
+  - `nombre`: Nombre del alumno.
+  - `apellidos`: Apellidos del alumno.
+  - `email`: Correo electrónico del alumno.
+  - `password`: Contraseña del alumno.
+  - `foto`: Archivo de imagen para la foto del alumno.
 - Respuesta exitosa:
   - Código: 201
   - Contenido: JSON con los datos del alumno recién creado.
@@ -25,7 +30,13 @@
 - URL: `PUT /api/alumnos/:id`
 - Middleware: `checkRolAlumno`
 - Descripción: Actualiza los datos de un alumno existente.
-- Body: JSON con los campos `nombre`, `apellidos`, `email`, `password` (opcional), `foto`, y `activo`.
+- Body: Debe enviarse en formato `multipart/form-data` para permitir la actualización de la foto del alumno. Incluye los campos:
+  - `nombre`: Nombre del alumno.
+  - `apellidos`: Apellidos del alumno.
+  - `email`: Correo electrónico del alumno.
+  - `password`: Contraseña del alumno (opcional).
+  - `foto`: Archivo de imagen para la foto del alumno.
+  - `activo`: Estado del alumno (activo/inactivo).
 - Respuesta exitosa:
   - Código: 200
   - Contenido: JSON con los datos actualizados del alumno.
@@ -33,3 +44,4 @@
 ## Middleware `checkRolAlumno`
 
 Este middleware verifica si el usuario con el `ID` especificado tiene el rol de `alumno` antes de permitir el acceso a ciertas rutas. Si el usuario no tiene el rol adecuado, se devuelve un error 403. El middleware se encuentra en `utils/middlewares.js`.
+
