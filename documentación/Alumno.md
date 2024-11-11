@@ -2,14 +2,25 @@
 
 ## Endpoints
 
+### Listar Alumnos
+
+- URL: `GET /api/alumnos`
+- Descripción: Devuelve un listado de todos los alumnos registrados en el sistema.
+- Respuesta exitosa:
+  - Código: 200
+  - Contenido: JSON con la lista de alumnos.
+
+---
+
 ### Obtener un Alumno por ID
 
 - URL: `GET /api/alumnos/:id`
-- Middleware: `checkRolAlumno`
 - Descripción: Devuelve la información completa de un alumno, incluyendo sus datos de usuario.
 - Respuesta exitosa:
   - Código: 200
   - Contenido: JSON con la información del alumno.
+
+---
 
 ### Registrar un Nuevo Alumno
 
@@ -25,10 +36,11 @@
   - Código: 201
   - Contenido: JSON con los datos del alumno recién creado.
 
+---
+
 ### Actualizar un Alumno Existente
 
 - URL: `PUT /api/alumnos/:id`
-- Middleware: `checkRolAlumno`
 - Descripción: Actualiza los datos de un alumno existente.
 - Body: Debe enviarse en formato `multipart/form-data` para permitir la actualización de la foto del alumno. Incluye los campos:
   - `nombre`: Nombre del alumno.
@@ -40,8 +52,4 @@
 - Respuesta exitosa:
   - Código: 200
   - Contenido: JSON con los datos actualizados del alumno.
-
-## Middleware `checkRolAlumno`
-
-Este middleware verifica si el usuario con el `ID` especificado tiene el rol de `alumno` antes de permitir el acceso a ciertas rutas. Si el usuario no tiene el rol adecuado, se devuelve un error 403. El middleware se encuentra en `utils/middlewares.js`.
 
