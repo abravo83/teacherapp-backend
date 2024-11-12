@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const {
+  obtenerProfesores,
   obtenerProfesor,
   registroProfesor,
   actualizarProfesor,
@@ -10,6 +11,7 @@ const {
   checkRolAdministrador
 } = require("../../utils/middlewares");
 
+router.get('/', obtenerProfesores);
 router.get("/:id", obtenerProfesor);
 router.post("/registro", uploadToImgProfile.single("imagen"), registroProfesor);
 router.put(

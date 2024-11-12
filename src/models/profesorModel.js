@@ -1,5 +1,12 @@
 const pool = require("../config/db");
 
+async function listarProfesores() {
+  const [rows] = await pool.query(
+    `SELECT usuarios.id, usuarios.nombre, usuarios.apellidos, usuarios.email, usuarios.rol, usuarios.foto, usuarios.activo, profesores.precio_hora, profesores.localizacion, profesores.telefono, profesores.meses_experiencia, profesores.validado FROM usuarios JOIN profesores ON usuarios.id = profesores.usuarios_id WHERE usuarios.rol = 'profesor'`
+  );
+  return rows;
+}
+
 async function insertProfesor({ usuario, profesor, materias }) {
   const [usuarioResult] = await pool.query(
     "INSERT INTO usuarios (nombre, apellidos, email, password, rol, foto, activo) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -118,6 +125,7 @@ async function validarDesvalidarProfesor(id, validado) {
   }
 
 module.exports = {
+  listarProfesores,
   insertProfesor,
   updateProfesor,
   selectProfesorById,

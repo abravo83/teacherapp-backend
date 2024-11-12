@@ -1,5 +1,12 @@
 const pool = require("../config/db");
 
+async function listarAlumnos() {
+  const [rows] = await pool.query(
+    `SELECT id, nombre, apellidos, email, rol, foto, activo FROM usuarios WHERE rol = 'alumno'`
+  );
+  return rows;
+}
+
 async function selectAlumnoById(alumnoId) {
   const [result] = await pool.query(
     `SELECT id, nombre, apellidos, email, foto, rol, activo 
@@ -47,4 +54,5 @@ module.exports = {
   insertAlumno,
   updateAlumno,
   activarDesactivarAlumno,
+  listarAlumnos
 };

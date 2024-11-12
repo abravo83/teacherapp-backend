@@ -2,13 +2,23 @@ const {
   selectAlumnoById,
   insertAlumno,
   updateAlumno,
-  activarDesactivarAlumno
+  activarDesactivarAlumno,
+  listarAlumnos
 } = require("../models/alumnoModel");
 
 
 const bcrypt = require("bcryptjs");
 
 const { saveProfileImage } = require("../utils/helpers");
+
+const obtenerAlumnos = async (req, res, next) => {
+  try {
+    const alumnos = await listarAlumnos();
+    res.status(200).json(alumnos);
+  } catch (error) {
+    next(error);
+  }
+};
 
 const obtenerAlumno = async (req, res, next) => {
   try {
@@ -79,6 +89,7 @@ async function activarDesactivar(req, res) {
 }
 
 module.exports = {
+  obtenerAlumnos,
   obtenerAlumno,
   registroAlumno,
   actualizarAlumno,

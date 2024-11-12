@@ -1,12 +1,23 @@
 const {
+
   insertProfesor,
   updateProfesor,
   selectProfesorById,
-  validarDesvalidarProfesor
+  validarDesvalidarProfesor,
+  listarProfesores
 } = require("../models/profesorModel");
 const bcrypt = require("bcryptjs");
 
 const { saveProfileImage } = require("../utils/helpers");
+
+const obtenerProfesores = async (req, res, next) => {
+  try {
+    const profesores = await listarProfesores();
+    res.status(200).json(profesores);
+  } catch (error) {
+    next(error);
+  }
+};
 
 const obtenerProfesor = async (req, res, next) => {
   try {
@@ -76,6 +87,7 @@ async function validarDesvalidar(req, res) {
 }
 
 module.exports = {
+  obtenerProfesores,
   obtenerProfesor,
   registroProfesor,
   actualizarProfesor,
