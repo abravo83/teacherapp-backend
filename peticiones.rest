@@ -112,3 +112,26 @@ Content-Type: application/json
   "email": "juan.perez@example.com",
   "password": "Password123"
 }
+
+#####################
+###### Admin ########
+#####################
+
+
+# Activar o desactivar un alumno
+PUT {{url}}/alumnos/1/activar
+Content-Type: application/json
+
+{
+  "activo": true
+}
+
+
+# Validar o desvalidar un profesor
+PUT {{url}}/profesores/1/validar
+Content-Type: application/json
+
+{
+  "validado": true
+}
+

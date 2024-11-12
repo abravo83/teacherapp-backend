@@ -2,6 +2,7 @@ const {
   insertProfesor,
   updateProfesor,
   selectProfesorById,
+  validarDesvalidarProfesor
 } = require("../models/profesorModel");
 const bcrypt = require("bcryptjs");
 
@@ -57,8 +58,26 @@ const actualizarProfesor = async (req, res, next) => {
   }
 };
 
+async function validarDesvalidar(req, res) {
+  const { id } = req.params;
+  const { validado } = req.body;
+
+  try {
+    const actualizado = await validarDesvalidarProfesor(id, validado);
+    if (!actualizado) {
+      return res.status(404).json({ message: 'Profesor no encontrado o rol incorrecto' });
+    }
+
+    const mensajeValidacion = validado ? 'Profesor validado correctamente' : 'Profesor desvalidado correctamente';
+    res.status(200).json({ message: mensajeValidacion });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar la validación del profesor', error });
+  }
+}
+
 module.exports = {
   obtenerProfesor,
   registroProfesor,
   actualizarProfesor,
+  validarDesvalidar,
 };

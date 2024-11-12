@@ -48,8 +48,7 @@ function checkRolAdministrador(req, res, next) {
 
 
 module.exports = {
-  checkToken,
-  checkRolProfesor,
-  checkRolAlumno,
+  checkToken,  
   uploadToImgProfile,
+  checkRolAdministrador,
 };

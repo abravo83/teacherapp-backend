@@ -3,9 +3,11 @@ const {
   obtenerProfesor,
   registroProfesor,
   actualizarProfesor,
+  validarDesvalidar
 } = require("../../controllers/profesoresController");
 const {
   uploadToImgProfile,
+  checkRolAdministrador
 } = require("../../utils/middlewares");
 
 router.get("/:id", obtenerProfesor);
@@ -15,5 +17,6 @@ router.put(
   uploadToImgProfile.single("imagen"),
   actualizarProfesor
 );
+router.put("/:id/validar", checkRolAdministrador, validarDesvalidar);
 
 module.exports = router;
