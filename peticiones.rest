@@ -117,21 +117,21 @@ Content-Type: application/json
 ###### Admin ########
 #####################
 
-
+###
 # Activar o desactivar un alumno
-PUT {{url}}/alumnos/1/activar
+PUT {{url}}/alumnos/2/activar
 Content-Type: application/json
 
 {
-  "activo": true
+  "activo": false
 }
 
-
+###
 # Validar o desvalidar un profesor
 PUT {{url}}/profesores/1/validar
 Content-Type: application/json
 
 {
-  "validado": true
+  "validado": false
 }
 

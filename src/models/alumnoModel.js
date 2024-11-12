@@ -41,6 +41,7 @@ async function activarDesactivarAlumno(id, activo) {
   return result.affectedRows > 0;
 }
 
+
 module.exports = {
   selectAlumnoById,
   insertAlumno,

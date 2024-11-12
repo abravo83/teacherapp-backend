@@ -14,7 +14,7 @@ router.get("/:id", obtenerAlumno);
 router.post("/registro", uploadToImgProfile.single("imagen"), registroAlumno);
 router.put("/:id", uploadToImgProfile.single("imagen"), actualizarAlumno);
 
-router.put("/:id/activar", checkRolAdministrador, activarDesactivar);
+router.put('/:id/activar', activarDesactivar);
 
 
 module.exports = router;

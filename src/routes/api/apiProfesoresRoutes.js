@@ -17,6 +17,6 @@ router.put(
   uploadToImgProfile.single("imagen"),
   actualizarProfesor
 );
-router.put("/:id/validar", checkRolAdministrador, validarDesvalidar);
+router.put('/:id/validar', validarDesvalidar);
 
 module.exports = router;

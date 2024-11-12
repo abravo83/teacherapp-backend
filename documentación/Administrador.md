@@ -5,8 +5,7 @@
 ### Activar o Desactivar un Alumno
 
 - URL: `PUT /api/alumnos/:id/activar`
-- Middleware: `checkAdministradorRol`
-- Descripción: Permite al administrador activar o desactivar un alumno (baja lógica) basado en el valor booleano de `activo`.
+- Descripción: Activa o desactiva un alumno (baja lógica) basado en el valor booleano de `activo`.
 - Parámetros:
   - `id`: ID del alumno a activar o desactivar.
 - Body:
@@ -20,8 +19,7 @@
 ### Validar o Desvalidar un Profesor
 
 - URL: `PUT /api/profesores/:id/validar`
-- Middleware: `checkAdministradorRol`
-- Descripción: Permite al administrador validar o desvalidar un profesor para que pueda aparecer o no en el directorio, basado en el valor booleano de `validado`.
+- Descripción: Valida o desvalida un profesor para que aparezca o no en el directorio, basado en el valor booleano de `validado`.
 - Parámetros:
   - `id`: ID del profesor a validar o desvalidar.
 - Body:
