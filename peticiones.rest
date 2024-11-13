@@ -54,12 +54,13 @@ Content-Type: application/json
 #####################
 
 # Activar o desactivar un usuario
-PUT {{url}}/usuarios/activar/2
+PUT {{url}}/usuarios/activar/1
 Content-Type: application/json
 
 {
-  "activo": false
+  "activo": true
 }
+
 
 ###
 

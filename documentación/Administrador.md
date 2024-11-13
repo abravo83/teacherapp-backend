@@ -26,3 +26,4 @@
 - Respuesta exitosa:
   - Código: 200
   - Contenido: JSON con el estado de validación actualizado del profesor.
+
