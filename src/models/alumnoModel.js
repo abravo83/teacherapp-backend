@@ -39,20 +39,10 @@ async function updateAlumno(
   return alumnoId;
 }
 
-async function activarDesactivarAlumno(id, activo) {
-  const [result] = await pool.query(
-    `UPDATE usuarios SET activo = ? WHERE id = ? AND rol = 'alumno'`,
-    [activo ? 1 : 0, id]
-  );
-
-  return result.affectedRows > 0;
-}
-
 
 module.exports = {
   selectAlumnoById,
   insertAlumno,
   updateAlumno,
-  activarDesactivarAlumno,
   listarAlumnos
 };

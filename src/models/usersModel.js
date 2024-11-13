@@ -10,4 +10,9 @@ async function selectByEmail(email) {
     return result[0];
 }
 
-module.exports = { selectAllUsers, selectByEmail};
+async function activarDesactivarUsuario(id, activo) {
+  const [result] = await pool.query("UPDATE usuarios SET activo = ? WHERE id = ?", [activo, id]);
+  return result;
+}
+
+module.exports = { selectAllUsers, selectByEmail, activarDesactivarUsuario};

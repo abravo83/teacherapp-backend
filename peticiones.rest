@@ -5,7 +5,7 @@
 #####################
 
 # Obtener todos los usuarios
-GET {{url}}/users
+GET {{url}}/usuarios
 
 #####################
 ##### Profesores ####
@@ -32,7 +32,7 @@ Content-Type: application/json
 ###
 
 # Obtener un alumno por ID
-GET {{url}}/alumnos/1
+GET {{url}}/alumnos/2
 Content-Type: application/json
 
 #####################
@@ -53,8 +53,8 @@ Content-Type: application/json
 ###### Admin ########
 #####################
 
-# Activar o desactivar un alumno
-PUT {{url}}/alumnos/2/activar
+# Activar o desactivar un usuario
+PUT {{url}}/usuarios/activar/2
 Content-Type: application/json
 
 {
@@ -64,10 +64,9 @@ Content-Type: application/json
 ###
 
 # Validar o desvalidar un profesor
-PUT {{url}}/profesores/1/validar
+PUT {{url}}/profesores/validar/1
 Content-Type: application/json
 
 {
-  "validado": false
-  
+  "validado": true
 }

@@ -109,20 +109,14 @@ async function selectProfesorById(profesorId) {
 }
 
 async function validarDesvalidarProfesor(id, validado) {
-    const [usuario] = await pool.query(
-      `SELECT * FROM usuarios WHERE id = ? AND rol = 'profesor'`,
-      [id]
-    );
-  
-    if (usuario.length === 0) return false;
-  
-    const [result] = await pool.query(
-      'UPDATE profesores SET validado = ? WHERE usuarios_id = ?',
-      [validado ? 1 : 0, id]
-    );
-  
-    return result.affectedRows > 0;
-  }
+  const [result] = await pool.query(
+    "UPDATE profesores SET validado = ? WHERE usuarios_id = ?",
+    [validado, id]
+  );
+  return result.affectedRows > 0;
+}
+
+
 
 module.exports = {
   listarProfesores,
@@ -130,4 +124,4 @@ module.exports = {
   updateProfesor,
   selectProfesorById,
   validarDesvalidarProfesor,
-};
+  };

@@ -5,6 +5,7 @@ const {
   registroProfesor,
   actualizarProfesor,
   validarDesvalidar
+  
 } = require("../../controllers/profesoresController");
 const {
   uploadToImgProfile,
@@ -19,6 +20,7 @@ router.put(
   uploadToImgProfile.single("imagen"),
   actualizarProfesor
 );
-router.put('/:id/validar', validarDesvalidar);
+router.put("/validar/:id", validarDesvalidar);
+
 
 module.exports = router;

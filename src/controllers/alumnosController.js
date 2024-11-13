@@ -2,7 +2,6 @@ const {
   selectAlumnoById,
   insertAlumno,
   updateAlumno,
-  activarDesactivarAlumno,
   listarAlumnos
 } = require("../models/alumnoModel");
 
@@ -71,28 +70,11 @@ const actualizarAlumno = async (req, res, next) => {
   }
 };
 
-async function activarDesactivar(req, res) {
-  const { id } = req.params;
-  const { activo } = req.body;
-
-  try {
-    const actualizado = await activarDesactivarAlumno(id, activo);
-    if (!actualizado) {
-      return res.status(404).json({ message: 'Alumno no encontrado o rol incorrecto' });
-    }
-
-    const mensajeEstado = activo ? 'Alumno activado correctamente' : 'Alumno desactivado correctamente';
-    res.status(200).json({ message: mensajeEstado });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar el estado del alumno', error });
-  }
-}
 
 module.exports = {
   obtenerAlumnos,
   obtenerAlumno,
   registroAlumno,
   actualizarAlumno,
-  activarDesactivar
 };
 
