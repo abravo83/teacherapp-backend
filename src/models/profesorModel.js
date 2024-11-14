@@ -75,7 +75,7 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
     profesorId,
   ]);
   if (materias && materias.length) {
-    const values = materias.map((materiaId) => [profesorId, materiaId]);
+    const values = materias.map((objMateria) => [+profesorId, objMateria.id]);
     await pool.query(
       "INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?",
       [values]
@@ -116,12 +116,10 @@ async function validarDesvalidarProfesor(id, validado) {
   return result.affectedRows > 0;
 }
 
-
-
 module.exports = {
   listarProfesores,
   insertProfesor,
   updateProfesor,
   selectProfesorById,
   validarDesvalidarProfesor,
-  };
+};
