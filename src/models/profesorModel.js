@@ -74,16 +74,31 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
   await pool.query("DELETE FROM materias_profesores WHERE usuarios_id = ?", [
     profesorId,
   ]);
+
+
   if (materias && materias.length) {
-    const values = materias.map((objMateria) => [+profesorId, objMateria.id]);
-    await pool.query(
-      "INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?",
-      [values]
-    );
+
+    const values = materias
+      .filter((materiaId) => materiaId !== null && materiaId !== undefined)
+      .map((materiaId) => [profesorId, materiaId]);
+
+    if (values.length) {
+
+      await pool.query(
+        "INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?",
+        [values]
+      );
+    } else {
+      console.log("No hay materias válidas para asociar al profesor.");
+    }
+  } else {
+    console.log("No se enviaron materias para asociar al profesor.");
   }
 
   return profesorId;
 }
+
+
 
 async function selectProfesorById(profesorId) {
   const [usuario] = await pool.query(
