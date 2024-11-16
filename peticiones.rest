@@ -61,9 +61,7 @@ Content-Type: application/json
   "activo": true
 }
 
-
 ###
-
 # Validar o desvalidar un profesor
 PUT {{url}}/profesores/validar/1
 Content-Type: application/json

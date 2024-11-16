@@ -35,14 +35,16 @@ const checkToken = async (req, res, next) => {
   next();
 };
 
-function checkRolAdministrador(req, res, next) {
-  if (!req.user || req.user.rol !== "administrador") {
-    return res.status(403).json({
-      message: "Acceso denegado: el usuario no es un administrador",
-    });
+const checkRolAdministrador = async (req, res, next) => {
+  try {    
+    if (req.user.rol !== "administrador") {
+      return res.status(403).json({ message: "Acceso denegado: no tienes permisos de administrador" });
+    }
+    next();
+  } catch (error) {
+    res.status(500).json({ message: "Error al verificar el rol de administrador", error });
   }
-  next();
-}
+};
 
 
 
