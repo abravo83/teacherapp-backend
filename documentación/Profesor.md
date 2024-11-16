@@ -41,13 +41,25 @@
 
 - URL: `PUT /api/profesores/:id`
 - Descripción: Actualiza los datos de un profesor existente, incluyendo la actualización de materias asignadas.
+- Middlewares:
+  - `checkToken`: Verifica que el usuario esté autenticado mediante un token válido.
+  - `checkUsuarioById`: Verifica que el usuario autenticado tiene el mismo ID que el profesor que se desea actualizar.
 - Body: Debe enviarse en formato `multipart/form-data` para permitir la actualización de archivos. Incluye los campos:
   - `usuario`: Información del usuario actualizada.
   - `profesor`: Detalles específicos del profesor.
   - `materias`: Lista actualizada de materias asignadas.
   - `foto`: Archivo de imagen para la foto del profesor (opcional).
-- Respuesta exitosa:
-  - Código: 200
-  - Contenido: JSON con los datos actualizados del profesor.
+- Respuestas:
+  - Exitosa:
+    - Código: 200
+    - Contenido: JSON con los datos actualizados del profesor.
+  - Error:
+    - Código: 404
+      - Profesor no encontrado.
+    - Código: 403
+      - No autorizado para realizar esta acción.
+    - Código: 500
+      - Error al actualizar los datos del profesor.
+
 
 

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 
-// Middleware the multer
+// Middleware de multer
 const uploadToImgProfile = multer({
   dest: path.join(__dirname, "../Public/img/profiles/"),
 });
@@ -36,21 +36,36 @@ const checkToken = async (req, res, next) => {
 };
 
 const checkRolAdministrador = async (req, res, next) => {
-  try {    
+  try {
     if (req.user.rol !== "administrador") {
-      return res.status(403).json({ message: "Acceso denegado: no tienes permisos de administrador" });
+      return res
+        .status(403)
+        .json({ message: "Acceso denegado: no tienes permisos de administrador" });
     }
     next();
   } catch (error) {
-    res.status(500).json({ message: "Error al verificar el rol de administrador", error });
+    res
+      .status(500)
+      .json({ message: "Error al verificar el rol de administrador", error });
   }
 };
 
+// Middleware para verificar que el usuario logueado coincide con el ID solicitado
+const checkUsuarioById = (req, res, next) => {
+  const { id } = req.params;
 
+  if (req.user.id !== parseInt(id, 10)) {
+    return res
+      .status(403)
+      .json({ message: "Acceso denegado: no puedes modificar este usuario" });
+  }
 
+  next();
+};
 
 module.exports = {
-  checkToken,  
+  checkToken,
   uploadToImgProfile,
   checkRolAdministrador,
+  checkUsuarioById,
 };
