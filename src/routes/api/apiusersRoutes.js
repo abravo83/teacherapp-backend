@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { getAllUsers, actualizarEstadoUsuario  } = require("../../controllers/usersController");
+const { getAllUsers, actualizarEstadoUsuario, registroAdmin  } = require("../../controllers/usersController");
 const {
     uploadToImgProfile,
     checkToken,
@@ -8,5 +8,6 @@ const {
 
 router.get("/", getAllUsers);
 router.put("/activar/:id", checkToken, checkRolAdministrador, actualizarEstadoUsuario);
+router.post('/registrarAdmin', registroAdmin);
 
 module.exports = router;

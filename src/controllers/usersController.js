@@ -5,6 +5,7 @@ const {
   selectAllUsers,
   toggleUsuarioActivo,
   selectUserById,
+  insertAdmin,
 } = require("../models/usersModel");
 
 const getAllUsers = async (req, res) => {
@@ -45,8 +46,25 @@ const selectUserFromMiddlewareById = async (id) => {
   return result[0];
 };
 
+/**
+ función para registrar un administador
+ sólo se usará para registrar a mano desde el backend
+ */
+const registroAdmin = async (req, res, next) => {
+  try {
+    req.body.password = await bcrypt.hash(req.body.password, 8);
+    
+    const adminId = await insertAdmin(req.body);
+    const [admin] = await selectUserById(adminId);
+    res.json(admin);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllUsers,
   actualizarEstadoUsuario,
   selectUserFromMiddlewareById,
+  registroAdmin
 };

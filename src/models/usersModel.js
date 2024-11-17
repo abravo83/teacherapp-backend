@@ -24,9 +24,28 @@ async function toggleUsuarioActivo(id, activo) {
   return result;
 }
 
+async function insertAdmin({ nombre, apellidos, email, password, activo }) {
+  const [usuarioResult] = await pool.query(
+    "INSERT INTO usuarios (nombre, apellidos, email, password, rol, activo) VALUES (?, ?, ?, ?, ?, ?)",
+    [
+      nombre,
+      apellidos,
+      email,
+      password,
+      "administrador",
+      1,
+    ]
+  );
+  const usuarioId = usuarioResult.insertId;
+
+   return usuarioId;
+}
+
+
 module.exports = {
   selectAllUsers,
   selectUserById,
   selectByEmail,
   toggleUsuarioActivo,
+  insertAdmin
 };
