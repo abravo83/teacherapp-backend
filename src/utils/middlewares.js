@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 
+const {
+  selectUserFromMiddlewareById,
+} = require("../controllers/usersController");
+
 // Middleware de multer
 const uploadToImgProfile = multer({
   dest: path.join(__dirname, "../Public/img/profiles/"),
@@ -25,9 +29,14 @@ const checkToken = async (req, res, next) => {
     return res.status(403).json({ message: "El token es incorrecto" });
   }
 
-  const usuario = await selectStaffById(data.usuario_id);
-  if (!usuario) {
-    return res.status(403).json({ message: "El usuario no existe" });
+  let usuario;
+  try {
+    usuario = await selectUserFromMiddlewareById(data.usuario_id);
+    if (!usuario) {
+      return res.status(403).json({ message: "El usuario no existe" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Error al verificar el token" });
   }
 
   req.user = usuario;
@@ -38,9 +47,9 @@ const checkToken = async (req, res, next) => {
 const checkRolAdministrador = async (req, res, next) => {
   try {
     if (req.user.rol !== "administrador") {
-      return res
-        .status(403)
-        .json({ message: "Acceso denegado: no tienes permisos de administrador" });
+      return res.status(403).json({
+        message: "Acceso denegado: no tienes permisos de administrador",
+      });
     }
     next();
   } catch (error) {

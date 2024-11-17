@@ -2,9 +2,8 @@ const {
   selectAlumnoById,
   insertAlumno,
   updateAlumno,
-  listarAlumnos
+  listarAlumnos,
 } = require("../models/alumnoModel");
-
 
 const bcrypt = require("bcryptjs");
 
@@ -52,13 +51,24 @@ const registroAlumno = async (req, res, next) => {
 const actualizarAlumno = async (req, res, next) => {
   try {
     let datos = JSON.parse(req.body.datos);
+
+    // Si recibimos archivo, lo guardamos en la carpeta y sustituimos el nombre.
     if (req.file) {
       datos.foto = saveProfileImage(req.file);
     }
 
+    // Si se recibe una nueva contraseña, la encriptamos, si no recuperamos la de la BD
     if (datos.password) {
       datos.password = await bcrypt.hash(datos.password, 8);
+    } else {
+      datos.password = req.user.password;
     }
+
+    // Si el campo datos.foto viene vacío entonces no hemos recibido una nueva foto y no la actualizamos
+    if (!datos.foto) {
+      datos.foto = req.user.foto;
+    }
+
     const alumnoActualizadoId = await updateAlumno(req.params.id, datos);
     const alumnoActualizado = await selectAlumnoById(alumnoActualizadoId);
     if (!alumnoActualizado) {
@@ -70,11 +80,9 @@ const actualizarAlumno = async (req, res, next) => {
   }
 };
 
-
 module.exports = {
   obtenerAlumnos,
   obtenerAlumno,
   registroAlumno,
   actualizarAlumno,
 };
-

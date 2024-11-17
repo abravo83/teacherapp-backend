@@ -3,7 +3,7 @@ const {
   updateProfesor,
   selectProfesorById,
   listarProfesores,
-  validarDesvalidarProfesor
+  validarDesvalidarProfesor,
 } = require("../models/profesorModel");
 
 const bcrypt = require("bcryptjs");
@@ -52,13 +52,24 @@ const registroProfesor = async (req, res, next) => {
 const actualizarProfesor = async (req, res, next) => {
   try {
     let datos = JSON.parse(req.body.datos);
+
+    // Si recibimos archivo, lo guardamos en la carpeta y sustituimos el nombre.
     if (req.file) {
       datos.usuario.foto = saveProfileImage(req.file);
     }
 
+    // Si se recibe una nueva contraseña, la encriptamos, si no recuperamos la de la BD
     if (datos.usuario.password) {
       datos.usuario.password = await bcrypt.hash(datos.usuario.password, 8);
+    } else {
+      datos.usuario.password = req.user.password;
     }
+
+    // Si el campo datos.usuario.foto viene vacío entonces no hemos recibido una nueva foto y no la actualizamos
+    if (!datos.usuario.foto) {
+      datos.usuario.foto = req.user.foto;
+    }
+
     const profesorActualizado = await updateProfesor(req.params.id, datos);
     if (!profesorActualizado) {
       return res.status(404).json({ message: "Profesor no encontrado" });
@@ -76,12 +87,19 @@ const validarDesvalidar = async (req, res, next) => {
   try {
     const actualizado = await validarDesvalidarProfesor(id, validado);
     if (!actualizado) {
-      return res.status(404).json({ message: 'Profesor no encontrado o rol incorrecto' });
+      return res
+        .status(404)
+        .json({ message: "Profesor no encontrado o rol incorrecto" });
     }
-    const mensajeValidacion = validado ? 'Profesor validado correctamente' : 'Profesor desvalidado correctamente';
+    const mensajeValidacion = validado
+      ? "Profesor validado correctamente"
+      : "Profesor desvalidado correctamente";
     res.status(200).json({ message: mensajeValidacion });
   } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar la validación del profesor', error });
+    res.status(500).json({
+      message: "Error al actualizar la validación del profesor",
+      error,
+    });
   }
 };
 
@@ -90,5 +108,5 @@ module.exports = {
   obtenerProfesor,
   registroProfesor,
   actualizarProfesor,
-  validarDesvalidar
+  validarDesvalidar,
 };

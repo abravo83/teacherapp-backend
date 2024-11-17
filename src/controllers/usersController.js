@@ -1,7 +1,11 @@
 const bcrypt = require("bcryptjs");
 
 const { createToken } = require("../utils/helpers");
-const { selectAllUsers, toggleUsuarioActivo } = require("../models/usersModel");
+const {
+  selectAllUsers,
+  toggleUsuarioActivo,
+  selectUserById,
+} = require("../models/usersModel");
 
 const getAllUsers = async (req, res) => {
   try {
@@ -21,11 +25,28 @@ const actualizarEstadoUsuario = async (req, res) => {
     if (!result || result.affectedRows === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-    res.status(200).json({ message: `Usuario ${activo ? 'activado' : 'desactivado'} correctamente` });
+    res.status(200).json({
+      message: `Usuario ${activo ? "activado" : "desactivado"} correctamente`,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error al actualizar el estado del usuario" });
+    res
+      .status(500)
+      .json({ message: "Error al actualizar el estado del usuario" });
   }
 };
 
+/**
+ * Función consumida por middlewares para recuperar el usuario.
+ * @params(id) id del usuario.
+ * @returns usuario
+ * */
+const selectUserFromMiddlewareById = async (id) => {
+  const [result] = await selectUserById(id);
+  return result[0];
+};
 
-module.exports = { getAllUsers, actualizarEstadoUsuario };
+module.exports = {
+  getAllUsers,
+  actualizarEstadoUsuario,
+  selectUserFromMiddlewareById,
+};
