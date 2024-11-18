@@ -4,10 +4,10 @@ const {
   selectProfesorById,
   listarProfesores,
   validarDesvalidarProfesor,
+  obtenerCorreosAdministradores,
 } = require("../models/profesorModel");
-
+const { enviarCorreo, generarMensajeRegistroProfesor } = require("../utils/emailService");
 const bcrypt = require("bcryptjs");
-
 const { saveProfileImage } = require("../utils/helpers");
 
 const obtenerProfesores = async (req, res, next) => {
@@ -35,7 +35,6 @@ const registroProfesor = async (req, res, next) => {
   try {
     let datos = JSON.parse(req.body.datos);
 
-    // Comprobamos si en el FormData viene foto que haya tratado multer
     if (req.file) {
       datos.usuario.foto = saveProfileImage(req.file);
     }
@@ -43,6 +42,14 @@ const registroProfesor = async (req, res, next) => {
     datos.usuario.password = await bcrypt.hash(datos.usuario.password, 8);
     const profesorId = await insertProfesor(datos);
     const profesor = await selectProfesorById(profesorId);
+
+    const correosAdministradores = await obtenerCorreosAdministradores();
+
+    if (correosAdministradores.length > 0) {
+      const { asunto, contenido } = generarMensajeRegistroProfesor(profesor);
+      await enviarCorreo(correosAdministradores, asunto, contenido);
+    }
+
     res.json(profesor);
   } catch (error) {
     next(error);
@@ -53,19 +60,16 @@ const actualizarProfesor = async (req, res, next) => {
   try {
     let datos = JSON.parse(req.body.datos);
 
-    // Si recibimos archivo, lo guardamos en la carpeta y sustituimos el nombre.
     if (req.file) {
       datos.usuario.foto = saveProfileImage(req.file);
     }
 
-    // Si se recibe una nueva contraseña, la encriptamos, si no recuperamos la de la BD
     if (datos.usuario.password) {
       datos.usuario.password = await bcrypt.hash(datos.usuario.password, 8);
     } else {
       datos.usuario.password = req.user.password;
     }
 
-    // Si el campo datos.usuario.foto viene vacío entonces no hemos recibido una nueva foto y no la actualizamos
     if (!datos.usuario.foto) {
       datos.usuario.foto = req.user.foto;
     }

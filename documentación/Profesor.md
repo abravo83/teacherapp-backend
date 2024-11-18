@@ -25,7 +25,7 @@
 ### Registrar un Nuevo Profesor
 
 - URL: `POST /api/profesores/registro`
-- Descripción: Registra un nuevo profesor con sus datos de usuario, detalles específicos de profesor y materias asignadas.
+- Descripción: Registra un nuevo profesor con sus datos de usuario, detalles específicos de profesor y materias asignadas. Además, envía automáticamente una notificación por correo electrónico a los administradores activos para informarles del nuevo registro y solicitar que validen el perfil del profesor en la plataforma.
 - Body: Debe enviarse en formato `multipart/form-data` para incluir posibles archivos (como foto de perfil). Campos:
   - `usuario`: Información del usuario (nombre, email, etc.).
   - `profesor`: Detalles específicos del profesor.
@@ -35,7 +35,6 @@
   - Código: 201
   - Contenido: JSON con los datos del profesor recién creado.
 
----
 
 ### Actualizar un Profesor Existente
 

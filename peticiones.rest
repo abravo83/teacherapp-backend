@@ -92,8 +92,8 @@ Content-Type: application/json
 {
   "nombre": "Usuario3",
   "apellidos": "Administrador",
-  "email": "admin3@email.com",
-  "password": "adminPassword123",
+  "email": "arturocarrasco.grado@gmail.com",
+  "password": "Admin123*",
   "activo": 1
 }
 

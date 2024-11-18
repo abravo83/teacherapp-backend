@@ -22,12 +22,3 @@ module.exports = {
 };
 
 
-
-// //Servicio frontend:
-// getMaterias(): Observable<Imateria[]> {
-//     return this.http.get<Imateria[]>(`${this.baseURL}/api/materias`);
-//   }
-
-//   getMateriasProfesor(profesorId: number): Observable<IMateriaProfesor[]> {
-//     return this.http.get<IMateriaProfesor[]>(`${this.baseURL}/api/materias/profesor-materias/${profesorId}`);
-//   }

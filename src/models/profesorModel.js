@@ -131,10 +131,18 @@ async function validarDesvalidarProfesor(id, validado) {
   return result.affectedRows > 0;
 }
 
+async function obtenerCorreosAdministradores() {
+  const [rows] = await pool.query(
+    'SELECT email FROM usuarios WHERE rol = "administrador" AND activo = 1'
+  );
+  return rows.map((row) => row.email);
+}
+
 module.exports = {
   listarProfesores,
   insertProfesor,
   updateProfesor,
   selectProfesorById,
   validarDesvalidarProfesor,
+  obtenerCorreosAdministradores
 };
