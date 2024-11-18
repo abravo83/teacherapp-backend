@@ -18,7 +18,7 @@ Content-Type: application/json
 ###
 
 # Obtener un profesor por ID
-GET {{url}}/profesores/1
+GET {{url}}/profesores/54
 Content-Type: application/json
 
 #####################
@@ -92,7 +92,7 @@ Content-Type: application/json
 {
   "nombre": "Usuario3",
   "apellidos": "Administrador",
-  "email": "arturocarrasco.grado@gmail.com",
+  "email": "carrascogonzalezarturo@gmail.com",
   "password": "Admin123*",
   "activo": 1
 }
