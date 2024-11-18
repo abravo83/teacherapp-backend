@@ -35,19 +35,6 @@ Content-Type: application/json
 GET {{url}}/alumnos/2
 Content-Type: application/json
 
-###
-# modificar un alumno
-PUT {{url}}/alumnos/5
-Content-Type: application/json
-
-{
-  "nombre": "Pedro",
-  "apellidos": "Ruiz Torres",
-  "email": "pedro@email.com",
-  "password": "passworddef",
-  "foto": "pedro.jpg",
-  "activo": 1
-}
 
 #####################
 ###### Materias #####
@@ -70,6 +57,7 @@ Content-Type: application/json
 # Activar o desactivar un usuario
 PUT {{url}}/usuarios/activar/2
 Content-Type: application/json
+Authorization: 
 
 {
   "activo": false
@@ -79,6 +67,7 @@ Content-Type: application/json
 # Validar o desvalidar un profesor
 PUT {{url}}/profesores/validar/1
 Content-Type: application/json
+Authorization: 
 
 {
   "validado": true
