@@ -86,3 +86,45 @@ Content-Type: application/json
   "activo": 1
 }
 
+
+
+
+
+#####################
+###### Mensajes ######
+#####################
+
+###
+#obtener mensajes sin leer
+GET {{url}}/mensajes/2
+
+###
+#obtener mensajes
+GET {{url}}/mensajes/2
+
+
+
+###
+#enviar mensaje
+POST {{url}}/mensajes/enviar
+Content-Type: application/json
+
+{
+  "emisor_id": 1,
+  "destinatario_id": 2,
+  "asunto": "dsf",
+  "contenido": "hola nos vemos 3242342"  
+}
+
+###
+#obtener mensaje no leidos por un receptor
+GET {{url}}/mensajes/2
+
+###
+#enviar mensaje
+PATCH {{url}}/mensajes/8
+Content-Type: application/json
+
+{
+  "leido": 1
+}
