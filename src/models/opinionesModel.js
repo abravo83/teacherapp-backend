@@ -4,10 +4,11 @@ function selectAllOpiniones() {
   return pool.query("select * from opiniones");
 }
 
-async function selectOpinonesById(id) {
-  const [result] = await pool.query("select * from opiniones where id = ?", [
-    id,
-  ]);
+async function selectOpinionesByIds(idEstudiante, idProfesor) {
+  const [result] = await pool.query(
+    "select * from opiniones where estudiante_id = ? and profesor_id = ?",
+    [idEstudiante, idProfesor]
+  );
 
   if (result.length === 0) return null;
 
@@ -25,10 +26,10 @@ async function selectOpinionesByProfesorId(profesorId) {
   return result;
 }
 
-async function selectOpinionesByAlumnoId(alumnoId) {
+async function selectOpinionesByEstudianteId(estudianteId) {
   const [result] = await pool.query(
-    "select * from opiniones where alumno_id = ?",
-    [alumnoId]
+    "select * from opiniones where estudiante_id = ?",
+    [estudianteId]
   );
 
   if (result.length === 0) return null;
@@ -38,31 +39,35 @@ async function selectOpinionesByAlumnoId(alumnoId) {
 
 function insertOpinion({ estudiante_id, profesor_id, puntuacion, comentario }) {
   return pool.query(
-    "insert into opiniones (estudiante_id, profesor_id, puntuacion, comentario, fecha) values (?, ?, ?, ?, DATE(NOW()))",
+    "insert into opiniones (estudiante_id, profesor_id, puntuacion, comentario, fecha) values (?, ?, ?, ?, NOW())",
     [estudiante_id, profesor_id, puntuacion, comentario]
   );
 }
 
-function updateOpinionById(
-  idOpinion,
-  { estudiante_id, profesor_id, puntuacion, comentario }
+function updateOpinionByIds(
+  estudiante_id,
+  profesor_id,
+  { puntuacion, comentario }
 ) {
   return pool.query(
-    "update opiniones set estudiante_id = ?, profesor_id = ?, puntuacion = ?, comentario = ? where id = ?",
-    [estudiante_id, profesor_id, puntuacion, comentario, idOpinion]
+    "update opiniones set puntuacion = ?, comentario = ? where estudiante_id = ? and profesor_id = ?",
+    [puntuacion, comentario, estudiante_id, profesor_id]
   );
 }
 
-function deleteOpinionById(id) {
-  return pool.query("delete from opiniones where id = ?", [id]);
+function deleteOpinionByIds(idEstudiante, idProfesor) {
+  return pool.query(
+    "delete from opiniones where estudiante_id = ? and profesor_id = ?",
+    [idEstudiante, idProfesor]
+  );
 }
 
 module.exports = {
   selectAllOpiniones,
-  selectOpinonesById,
+  selectOpinionesByIds,
   selectOpinionesByProfesorId,
-  selectOpinionesByAlumnoId,
+  selectOpinionesByEstudianteId,
   insertOpinion,
-  updateOpinionById,
-  deleteOpinionById,
+  updateOpinionByIds,
+  deleteOpinionByIds,
 };

@@ -86,3 +86,52 @@ Content-Type: application/json
   "activo": 1
 }
 
+#########################
+###### Opiniones ########
+#########################
+
+###
+# Obtener todas las opiniones
+GET {{url}}/opiniones
+
+###
+# Obtener opiniones por ids: idAlumno, idProfesor
+GET {{url}}/opiniones/single/2/1
+
+###
+# Obtener opiniones por profesor
+GET {{url}}/opiniones/profesor/1
+
+###
+# Obtener opiniones por alumno
+GET {{url}}/opiniones/estudiante/2
+
+###
+# Insertar opinión
+POST {{url}}/opiniones
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+{
+  "profesor_id": 4,
+  "puntuacion": 5,
+  "comentario": "Excelente profesor. Gran experiencia"
+}
+
+###
+# Actualizar opinión
+PUT {{url}}/opiniones/single/5/4
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+{
+  "profesor_id": 4,
+  "puntuacion": 5,
+  "comentario": "Excelente profesor. Genial experiencia"
+}
+
+###
+# Eliminar opinión
+DELETE {{url}}/opiniones/single/5/4
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
