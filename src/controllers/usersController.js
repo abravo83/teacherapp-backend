@@ -17,6 +17,18 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const [result] = await selectUserById(req.params.id);
+    if (!result || result.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    return res.json(result[0]);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const actualizarEstadoUsuario = async (req, res) => {
   const { id } = req.params;
   const { activo } = req.body;
@@ -53,7 +65,7 @@ const selectUserFromMiddlewareById = async (id) => {
 const registroAdmin = async (req, res, next) => {
   try {
     req.body.password = await bcrypt.hash(req.body.password, 8);
-    
+
     const adminId = await insertAdmin(req.body);
     const [admin] = await selectUserById(adminId);
     res.json(admin);
@@ -64,7 +76,8 @@ const registroAdmin = async (req, res, next) => {
 
 module.exports = {
   getAllUsers,
+  getUserById,
   actualizarEstadoUsuario,
   selectUserFromMiddlewareById,
-  registroAdmin
+  registroAdmin,
 };
