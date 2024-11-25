@@ -135,3 +135,37 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3Vh
 DELETE {{url}}/opiniones/single/5/4
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+#############################
+###### Inscripciones ########
+#############################
+
+###
+# Obtener todas las inscripciones
+GET {{url}}/inscripciones
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+###
+# Obtener inscripciones por alumno
+GET {{url}}/inscripciones/estudiante/2
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+###
+# Obtener inscripciones por profesor
+GET {{url}}/inscripciones/profesor/4
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+###
+# Insertar inscripción
+POST {{url}}/inscripciones/1
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+###
+# Cerrar inscripcion
+PUT {{url}}/inscripciones/cerrar/5
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
