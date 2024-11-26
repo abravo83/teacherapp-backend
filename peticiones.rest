@@ -95,13 +95,8 @@ Content-Type: application/json
 #####################
 
 ###
-#obtener mensajes sin leer
-GET {{url}}/mensajes/2
-
-###
-#obtener mensajes
-GET {{url}}/mensajes/2
-
+#obtener mensajes entre 2 usuarios
+GET {{url}}/mensajes/14/2
 
 
 ###
@@ -110,21 +105,26 @@ POST {{url}}/mensajes/enviar
 Content-Type: application/json
 
 {
-  "emisor_id": 1,
-  "destinatario_id": 2,
+  "emisor_id": 7,
+  "destinatario_id": 1,
   "asunto": "dsf",
-  "contenido": "hola nos vemos 3242342"  
+  "contenido": "hola sdfgdffg"  
 }
 
-###
-#obtener mensaje no leidos por un receptor
-GET {{url}}/mensajes/2
 
 ###
-#enviar mensaje
-PATCH {{url}}/mensajes/8
+#marcar leido
+patch  {{url}}/mensajes/418
 Content-Type: application/json
 
 {
   "leido": 1
 }
+
+###
+#obtener mis alumnos por mi id
+GET {{url}}/mensajes/misalumnos/4
+
+###
+#obtener mis profesores por mi id
+GET {{url}}/mensajes/misprofesores/2

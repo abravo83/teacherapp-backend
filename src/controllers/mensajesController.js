@@ -1,22 +1,12 @@
 const {
-  selectAllMensajes,
   sendMensaje,
   selectMsjById,
   selectMsjEmitUser,
   Readmsj,
   selectMensajesEntreUsuarios,
-  selectmischat,
+  getMisAlumnos,
+  getMisProfesores,
 } = require("../models/mensajesModel");
-
-//llama a todos los msj
-const obtenerMensajes = async (req, res, next) => {
-  try {
-    const [mensajes] = await selectAllMensajes();
-    res.json(mensajes);
-  } catch (error) {
-    next(error);
-  }
-};
 
 //llama a //enviar msj y devulve el mensaje enviado id
 const enviarmensaje = async (req, res, next) => {
@@ -53,7 +43,6 @@ const marcarLeido = async (req, res, next) => {
 
 const obtenerMensajesEntreUsuarios = async (req, res, next) => {
   const { emisor_id, destinatario_id } = req.params;
-
   try {
     const mensajes = await selectMensajesEntreUsuarios(
       emisor_id,
@@ -65,22 +54,34 @@ const obtenerMensajesEntreUsuarios = async (req, res, next) => {
   }
 };
 
-//mis recibidos
-const chatusers = async (req, res, next) => {
+/* llama a funcion getMisAlumnos */
+const misAlumnos = async (req, res, next) => {
   const { userid } = req.params;
   try {
-    const mensajes = await selectmischat(userid);
-    res.json(mensajes);
+    const alumnos = await getMisAlumnos(userid);
+    console.log(alumnos);
+    res.json(alumnos);
+  } catch (error) {
+    next(error);
+  }
+};
+//mis profesores
+const misProfesores = async (req, res, next) => {
+  const { userid } = req.params;
+  try {
+    const profesores = await getMisProfesores(userid);
+    console.log(profesores);
+    res.json(profesores);
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  obtenerMensajes,
   enviarmensaje,
   mensajesNoLeidos,
   marcarLeido,
   obtenerMensajesEntreUsuarios,
-  chatusers,
+  misAlumnos,
+  misProfesores,
 };
