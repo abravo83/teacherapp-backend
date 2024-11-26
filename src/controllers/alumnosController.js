@@ -29,24 +29,32 @@ const obtenerAlumno = async (req, res, next) => {
     next(error);
   }
 };
-
 const registroAlumno = async (req, res, next) => {
   try {
     let datos = JSON.parse(req.body.datos);
 
-    // Comprobamos si en el FormData viene foto que haya tratado multer
+    datos.password = await bcrypt.hash(datos.password, 8);
+
+    const alumnoId = await insertAlumno(datos);
+
     if (req.file) {
       datos.foto = saveProfileImage(req.file);
     }
 
-    datos.password = await bcrypt.hash(datos.password, 8);
-    const alumnoId = await insertAlumno(datos);
     const nuevoAlumno = await selectAlumnoById(alumnoId);
+
     res.status(201).json(nuevoAlumno);
   } catch (error) {
+    if (req.file) {
+      const fs = require("fs");
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.error("Error al eliminar la imagen temporal:", err);
+      });
+    }
     next(error);
   }
 };
+
 
 const actualizarAlumno = async (req, res, next) => {
   try {
