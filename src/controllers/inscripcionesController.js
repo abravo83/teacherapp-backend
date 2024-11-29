@@ -19,7 +19,7 @@ const getAllInscripciones = async (req, res, next) => {
 const getAllInscripcionesByEstudianteId = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const inscripciones = await selectAllInscripcionesByEstudianteId(id);
+    const [inscripciones] = await selectAllInscripcionesByEstudianteId(id);
     res.status(200).json(inscripciones);
   } catch (error) {
     next(error);
@@ -29,7 +29,7 @@ const getAllInscripcionesByEstudianteId = async (req, res, next) => {
 const getAllInscripcionesByProfesorId = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const inscripciones = await selectAllInscripcionesByProfesorId(id);
+    const [inscripciones] = await selectAllInscripcionesByProfesorId(id);
     res.status(200).json(inscripciones);
   } catch (error) {
     next(error);
