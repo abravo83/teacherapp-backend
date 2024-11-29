@@ -7,6 +7,38 @@ async function listarProfesores() {
   return rows;
 }
 
+async function selectAllMateriasDeProfesor() {
+  const [result] = await pool.query(`SELECT 
+    p.id,
+    u.nombre,
+    u.apellidos,
+    u.email,
+    u.rol,
+    u.foto,
+    u.activo,
+    p.precio_hora,
+    p.localizacion,
+    p.telefono,
+    p.meses_experiencia,
+    p.validado,
+    JSON_ARRAYAGG(m.nombre) AS materias
+FROM 
+    profesores p
+JOIN 
+    usuarios u ON p.usuarios_id = u.id
+JOIN 
+    materias_profesores mp ON p.usuarios_id = mp.usuarios_id
+JOIN 
+    materias m ON mp.Materias_id = m.id
+GROUP BY 
+    p.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado;
+
+
+
+`);
+  return result;
+}
+
 async function insertProfesor({ usuario, profesor, materias }) {
   const [usuarioResult] = await pool.query(
     "INSERT INTO usuarios (nombre, apellidos, email, password, rol, foto, activo) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -75,15 +107,12 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
     profesorId,
   ]);
 
-
   if (materias && materias.length) {
-
     const values = materias
       .filter((materiaId) => materiaId !== null && materiaId !== undefined)
       .map((materiaId) => [profesorId, materiaId]);
 
     if (values.length) {
-
       await pool.query(
         "INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?",
         [values]
@@ -97,8 +126,6 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
 
   return profesorId;
 }
-
-
 
 async function selectProfesorById(profesorId) {
   const [usuario] = await pool.query(
@@ -140,9 +167,10 @@ async function obtenerCorreosAdministradores() {
 
 module.exports = {
   listarProfesores,
+  selectAllMateriasDeProfesor,
   insertProfesor,
   updateProfesor,
   selectProfesorById,
   validarDesvalidarProfesor,
-  obtenerCorreosAdministradores
+  obtenerCorreosAdministradores,
 };
