@@ -5,8 +5,12 @@ const {
   listarProfesores,
   validarDesvalidarProfesor,
   obtenerCorreosAdministradores,
+  selectAllMateriasDeProfesor,
 } = require("../models/profesorModel");
-const { enviarCorreo, generarMensajeRegistroProfesor } = require("../utils/emailService");
+const {
+  enviarCorreo,
+  generarMensajeRegistroProfesor,
+} = require("../utils/emailService");
 const bcrypt = require("bcryptjs");
 const { saveProfileImage } = require("../utils/helpers");
 
@@ -26,6 +30,15 @@ const obtenerProfesor = async (req, res, next) => {
       return res.status(404).json({ message: "Profesor no encontrado" });
     }
     res.json(profesor);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const obtenerMateriasDeProfesor = async (req, res, next) => {
+  try {
+    const materias_profesores = await selectAllMateriasDeProfesor();
+    res.json(materias_profesores);
   } catch (error) {
     next(error);
   }
@@ -121,6 +134,7 @@ const validarDesvalidar = async (req, res, next) => {
 module.exports = {
   obtenerProfesores,
   obtenerProfesor,
+  obtenerMateriasDeProfesor,
   registroProfesor,
   actualizarProfesor,
   validarDesvalidar,

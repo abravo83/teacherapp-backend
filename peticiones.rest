@@ -15,6 +15,13 @@ GET {{url}}/usuarios
 GET {{url}}/profesores
 Content-Type: application/json
 
+# Obtener todas los profesores con materias
+###
+GET {{url}}/profesores/profesor-materias
+Content-Type: application/json
+
+###
+
 ###
 
 # Obtener un profesor por ID
@@ -44,7 +51,7 @@ Content-Type: application/json
 GET {{url}}/materias
 Content-Type: application/json
 
-###
+
 
 # Obtener materias asignadas a un profesor por ID de profesor
 GET {{url}}/materias/profesor-materias/1
