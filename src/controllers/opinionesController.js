@@ -1,5 +1,5 @@
 const {
-  selectAllRegistrosByEstudianteId,
+  selectAllInscripcionesByEstudianteId,
 } = require("../models/inscripcionesModel");
 const {
   selectAllOpiniones,
@@ -65,7 +65,7 @@ const createOpinion = async (req, res, next) => {
     }
 
     // Comprobamos si el alumno ha sido alumno del profesor del que quiere opinar.
-    const [inscripcionesAlumno] = await selectAllRegistrosByEstudianteId(
+    const [inscripcionesAlumno] = await selectAllInscripcionesByEstudianteId(
       usuario.id
     );
     if (
