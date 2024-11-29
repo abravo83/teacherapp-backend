@@ -5,15 +5,17 @@ const selectAllInscripciones = () => {
 };
 
 const selectAllInscripcionesByEstudianteId = (estudianteId) => {
-  return pool.query("select * from inscripciones_clase where alumno_id = ?", [
-    estudianteId,
-  ]);
+  return pool.query(
+    "select alumno_id, profesor_id, nombre as nombre_profesor , apellidos as apellidos_profesor, foto as foto_profesor, email as email_profesor, fecha_registro, fecha_fin from inscripciones_clase inner join usuarios on inscripciones_clase.profesor_id = usuarios.id where inscripciones_clase.alumno_id = ? ",
+    [estudianteId]
+  );
 };
 
 const selectAllInscripcionesByProfesorId = (profesorId) => {
-  return pool.query("select * from inscripciones_clase where profesor_id = ?", [
-    profesorId,
-  ]);
+  return pool.query(
+    "select profesor_id, alumno_id, nombre as nombre_alumno, apellidos as apellidos_alumno, foto as foto_alumno, email as email_alumno, fecha_registro, fecha_fin from inscripciones_clase INNER JOIN usuarios on inscripciones_clase.alumno_id = usuarios.id where profesor_id = ?",
+    [profesorId]
+  );
 };
 
 const selectInscripcion = (id) => {
