@@ -59,7 +59,6 @@ const misAlumnos = async (req, res, next) => {
   const { userid } = req.params;
   try {
     const alumnos = await getMisAlumnos(userid);
-    console.log(alumnos);
     res.json(alumnos);
   } catch (error) {
     next(error);
@@ -70,7 +69,6 @@ const misProfesores = async (req, res, next) => {
   const { userid } = req.params;
   try {
     const profesores = await getMisProfesores(userid);
-    console.log(profesores);
     res.json(profesores);
   } catch (error) {
     next(error);
