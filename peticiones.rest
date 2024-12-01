@@ -176,3 +176,44 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3Vh
 PUT {{url}}/inscripciones/cerrar/5
 Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+
+
+#####################
+###### Mensajes ######
+#####################
+
+###
+#obtener mensajes entre 2 usuarios
+GET {{url}}/mensajes/14/2
+
+
+###
+#enviar mensaje
+POST {{url}}/mensajes/enviar
+Content-Type: application/json
+
+{
+  "emisor_id": 7,
+  "destinatario_id": 1,
+  "asunto": "dsf",
+  "contenido": "hola sdfgdffg"  
+}
+
+
+###
+#marcar leido
+patch  {{url}}/mensajes/418
+Content-Type: application/json
+
+{
+  "leido": 1
+}
+
+###
+#obtener mis alumnos por mi id
+GET {{url}}/mensajes/misalumnos/4
+
+###
+#obtener mis profesores por mi id
+GET {{url}}/mensajes/misprofesores/2
