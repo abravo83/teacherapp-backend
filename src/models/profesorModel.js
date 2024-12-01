@@ -32,7 +32,7 @@ JOIN
 JOIN 
     materias m ON mp.Materias_id = m.id
 GROUP BY 
-    p.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado, p.sobre_mi;
+    p.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado;
 
 
 
@@ -56,7 +56,7 @@ async function insertProfesor({ usuario, profesor, materias }) {
   const usuarioId = usuarioResult.insertId;
 
   await pool.query(
-    "INSERT INTO profesores (usuarios_id, precio_hora, localizacion, telefono, meses_experiencia, validado, sobre_mi) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO profesores (usuarios_id, precio_hora, localizacion, telefono, meses_experiencia, validado) VALUES (?, ?, ?, ?, ?, ?)",
     [
       usuarioId,
       profesor.precio_hora,
@@ -64,7 +64,6 @@ async function insertProfesor({ usuario, profesor, materias }) {
       profesor.telefono,
       profesor.meses_experiencia,
       profesor.validado,
-      profesor.sobre_mi,
       0,
     ]
   );
@@ -95,14 +94,13 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
   );
 
   await pool.query(
-    "UPDATE profesores SET telefono = ?, precio_hora = ?, localizacion = ?, meses_experiencia = ?, validado = ?, sobre_mi = ? WHERE usuarios_id = ?",
+    "UPDATE profesores SET telefono = ?, precio_hora = ?, localizacion = ?, meses_experiencia = ?, validado = ? WHERE usuarios_id = ?",
     [
       profesor.telefono,
       profesor.precio_hora,
       profesor.localizacion,
       profesor.meses_experiencia,
       profesor.validado,
-      profesor.sobre_mi,
       profesorId,
     ]
   );
