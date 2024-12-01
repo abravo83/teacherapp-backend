@@ -2,7 +2,7 @@ const pool = require("../config/db");
 
 async function listarProfesores() {
   const [rows] = await pool.query(
-    `SELECT usuarios.id, usuarios.nombre, usuarios.apellidos, usuarios.email, usuarios.rol, usuarios.foto, usuarios.activo, profesores.precio_hora, profesores.localizacion, profesores.telefono, profesores.meses_experiencia, profesores.validado FROM usuarios JOIN profesores ON usuarios.id = profesores.usuarios_id WHERE usuarios.rol = 'profesor'`
+    `SELECT usuarios.id, usuarios.nombre, usuarios.apellidos, usuarios.email, usuarios.rol, usuarios.foto, usuarios.activo, profesores.precio_hora, profesores.localizacion, profesores.telefono, profesores.meses_experiencia, profesores.validado, profesores.sobre_mi FROM usuarios JOIN profesores ON usuarios.id = profesores.usuarios_id WHERE usuarios.rol = 'profesor'`
   );
   return rows;
 }
@@ -21,6 +21,7 @@ async function selectAllMateriasDeProfesor() {
     p.telefono,
     p.meses_experiencia,
     p.validado,
+    p.sobre_mi,
     JSON_ARRAYAGG(m.nombre) AS materias
 FROM 
     profesores p
@@ -31,7 +32,7 @@ JOIN
 JOIN 
     materias m ON mp.Materias_id = m.id
 GROUP BY 
-    p.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado;
+    p.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado, p.sobre_mi;
 
 
 
@@ -55,13 +56,15 @@ async function insertProfesor({ usuario, profesor, materias }) {
   const usuarioId = usuarioResult.insertId;
 
   await pool.query(
-    "INSERT INTO profesores (usuarios_id, precio_hora, localizacion, telefono, meses_experiencia, validado) VALUES (?, ?, ?, ?, ?, ?)",
+    "INSERT INTO profesores (usuarios_id, precio_hora, localizacion, telefono, meses_experiencia, validado, sobre_mi) VALUES (?, ?, ?, ?, ?, ?, ?)",
     [
       usuarioId,
       profesor.precio_hora,
       profesor.localizacion,
       profesor.telefono,
       profesor.meses_experiencia,
+      profesor.validado,
+      profesor.sobre_mi,
       0,
     ]
   );
@@ -92,13 +95,14 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
   );
 
   await pool.query(
-    "UPDATE profesores SET telefono = ?, precio_hora = ?, localizacion = ?, meses_experiencia = ?, validado = ? WHERE usuarios_id = ?",
+    "UPDATE profesores SET telefono = ?, precio_hora = ?, localizacion = ?, meses_experiencia = ?, validado = ?, sobre_mi = ? WHERE usuarios_id = ?",
     [
       profesor.telefono,
       profesor.precio_hora,
       profesor.localizacion,
       profesor.meses_experiencia,
       profesor.validado,
+      profesor.sobre_mi,
       profesorId,
     ]
   );
