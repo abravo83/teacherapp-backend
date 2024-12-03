@@ -59,7 +59,6 @@ async function getMisAlumnos(userid) {
     "select distinct u.id,u.nombre,u.apellidos,u.foto,u.rol from usuarios as u inner join inscripciones_clase on u.id = inscripciones_clase.alumno_id where inscripciones_clase.profesor_id = ?;",
     [userid]
   );
-  console.log(result);
   if (result.length === 0) return null;
   return result;
 }
@@ -69,7 +68,6 @@ async function getMisProfesores(userid) {
     "select distinct u.id,u.nombre,u.apellidos,u.foto,u.rol from usuarios as u inner join inscripciones_clase on u.id = inscripciones_clase.profesor_id where inscripciones_clase.alumno_id =?;",
     [userid]
   );
-  console.log(result);
   if (result.length === 0) return null;
   return result;
 }
