@@ -21,6 +21,14 @@ GET {{url}}/profesores/profesor-materias
 Content-Type: application/json
 
 ###
+# Actualizar sobre mi de un profesor
+PATCH {{url}}/profesores/sobremi/1
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvX2lkIjo1LCJ1c3VhcmlvX3JvbCI6ImFsdW1ubyIsImlhdCI6MTczMjM0OTQyNn0.bADICpCtDLzSK6mmKWcabKrZ1i7undzpZycxpju0-84
+
+{
+  "sobre_mi": "Soy un profesor de prueba"
+}
 
 ###
 

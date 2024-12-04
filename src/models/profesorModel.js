@@ -194,6 +194,24 @@ async function obtenerCorreosAdministradores() {
   return rows.map((row) => row.email);
 }
 
+async function updateProfesorSobreMi(profesorUsuarioId, sobre_mi) {
+  const [result] = await pool.query(
+    "UPDATE profesores SET sobre_mi = ? WHERE usuarios_id = ?",
+    [sobre_mi, profesorUsuarioId]
+  );
+
+  // Si se actualiza correctamente, devolvemos el objeto actualizado
+  if (result.affectedRows > 0) {
+    const [profesor] = await pool.query(
+      "SELECT * FROM profesores WHERE usuarios_id = ?",
+      [profesorUsuarioId]
+    );
+    return profesor;
+  } else {
+    return null;
+  }
+}
+
 module.exports = {
   listarProfesores,
   selectAllMateriasDeProfesor,
@@ -202,4 +220,5 @@ module.exports = {
   selectProfesorById,
   validarDesvalidarProfesor,
   obtenerCorreosAdministradores,
+  updateProfesorSobreMi,
 };

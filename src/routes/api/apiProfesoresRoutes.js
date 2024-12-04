@@ -6,6 +6,7 @@ const {
   actualizarProfesor,
   validarDesvalidar,
   obtenerMateriasDeProfesor,
+  actualizarProfesorSobreMi,
 } = require("../../controllers/profesoresController");
 const {
   uploadToImgProfile,
@@ -25,6 +26,7 @@ router.put(
   uploadToImgProfile.single("imagen"),
   actualizarProfesor
 );
+router.patch("/sobremi/:id", checkToken, actualizarProfesorSobreMi);
 router.put(
   "/validar/:id",
   checkToken,
