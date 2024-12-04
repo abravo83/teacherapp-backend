@@ -32,6 +32,9 @@ async function selectAllMateriasDeProfesor() {
             GROUP BY m.nombre
         ) m_unique
     ) AS materias,
+     CAST((SELECT AVG(o.puntuacion) 
+          FROM opiniones o 
+          WHERE o.profesor_id = u.id) AS FLOAT) AS puntuacion,
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
