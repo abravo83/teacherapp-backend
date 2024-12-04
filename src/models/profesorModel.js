@@ -26,15 +26,17 @@ async function selectAllMateriasDeProfesor() {
     -- Materias dictadas por el profesor como objeto JSON
     JSON_ARRAYAGG(m.nombre) AS materias,
     -- Calificación promedio del profesor
-    (SELECT AVG(o.puntuacion) 
-     FROM opiniones o 
-     WHERE o.profesor_id = u.id) AS puntuacion
+    CAST((SELECT AVG(o.puntuacion) 
+          FROM opiniones o 
+          WHERE o.profesor_id = u.id) AS FLOAT) AS puntuacion
 FROM usuarios u
 JOIN profesores p ON u.id = p.usuarios_id
 LEFT JOIN materias_profesores mp ON p.usuarios_id = mp.usuarios_id
 LEFT JOIN materias m ON mp.Materias_id = m.id
 WHERE u.rol = 'profesor'
-GROUP BY u.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado;
+GROUP BY u.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, 
+         p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado;
+
 
 
 
