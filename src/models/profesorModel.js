@@ -10,8 +10,8 @@ async function listarProfesores() {
 async function selectAllMateriasDeProfesor() {
   const [result] = await pool.query(`SELECT 
     p.id,
-    u.nombre,
-    u.apellidos,
+    u.nombre AS nombre,
+    u.apellidos AS apellidos,
     u.email,
     u.rol,
     u.foto,
@@ -22,21 +22,48 @@ async function selectAllMateriasDeProfesor() {
     p.meses_experiencia,
     p.validado,
     p.sobre_mi,
-    JSON_ARRAYAGG(m.nombre) AS materias
+    (
+        SELECT JSON_ARRAYAGG(m_unique.nombre)
+        FROM (
+            SELECT m.nombre
+            FROM materias_profesores mp
+            JOIN materias m ON mp.Materias_id = m.id
+            WHERE mp.usuarios_id = p.usuarios_id
+            GROUP BY m.nombre
+        ) m_unique
+    ) AS materias,
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'estudiante_id', o.estudiante_id,
+                'estudiante_nombre', eu.nombre,
+                'puntuacion', o.puntuacion,
+                'comentario', o.comentario,
+                'fecha', o.fecha
+            )
+        )
+        FROM opiniones o
+        LEFT JOIN usuarios eu ON o.estudiante_id = eu.id
+        WHERE o.profesor_id = p.id
+    ) AS opiniones
 FROM 
     profesores p
 JOIN 
     usuarios u ON p.usuarios_id = u.id
-JOIN 
-    materias_profesores mp ON p.usuarios_id = mp.usuarios_id
-JOIN 
-    materias m ON mp.Materias_id = m.id
 GROUP BY 
-    p.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado;
-
-
-
-`);
+    p.id, 
+    u.nombre, 
+    u.apellidos, 
+    u.email, 
+    u.rol, 
+    u.foto, 
+    u.activo, 
+    p.precio_hora, 
+    p.localizacion, 
+    p.telefono, 
+    p.meses_experiencia, 
+    p.validado, 
+    p.sobre_mi;`);
   return result;
 }
 
