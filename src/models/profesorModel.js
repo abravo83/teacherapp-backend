@@ -8,41 +8,62 @@ async function listarProfesores() {
 }
 
 async function selectAllMateriasDeProfesor() {
-  const [result] = await pool.query(`
-    
-    SELECT 
-    u.id AS id,
+  const [result] = await pool.query(`SELECT 
+    p.id,
     u.nombre AS nombre,
     u.apellidos AS apellidos,
-    u.email AS email,
-    u.rol AS rol,
-    u.foto AS foto,
-    u.activo AS activo,
-    p.precio_hora AS precio_hora,
-    p.localizacion AS localizacion,
-    p.telefono AS telefono,
-    p.meses_experiencia AS meses_experiencia,
-    p.validado AS validado,
-    -- Materias dictadas por el profesor como objeto JSON
-    JSON_ARRAYAGG(m.nombre) AS materias,
-    -- Calificación promedio del profesor
-    CAST((SELECT AVG(o.puntuacion) 
-          FROM opiniones o 
-          WHERE o.profesor_id = u.id) AS FLOAT) AS puntuacion
-FROM usuarios u
-JOIN profesores p ON u.id = p.usuarios_id
-LEFT JOIN materias_profesores mp ON p.usuarios_id = mp.usuarios_id
-LEFT JOIN materias m ON mp.Materias_id = m.id
-WHERE u.rol = 'profesor'
-GROUP BY u.id, u.nombre, u.apellidos, u.email, u.rol, u.foto, u.activo, 
-         p.precio_hora, p.localizacion, p.telefono, p.meses_experiencia, p.validado;
-
-
-
-
-
-
-`);
+    u.email,
+    u.rol,
+    u.foto,
+    u.activo,
+    p.precio_hora,
+    p.localizacion,
+    p.telefono,
+    p.meses_experiencia,
+    p.validado,
+    p.sobre_mi,
+    (
+        SELECT JSON_ARRAYAGG(m_unique.nombre)
+        FROM (
+            SELECT m.nombre
+            FROM materias_profesores mp
+            JOIN materias m ON mp.Materias_id = m.id
+            WHERE mp.usuarios_id = p.usuarios_id
+            GROUP BY m.nombre
+        ) m_unique
+    ) AS materias,
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'estudiante_id', o.estudiante_id,
+                'estudiante_nombre', eu.nombre,
+                'puntuacion', o.puntuacion,
+                'comentario', o.comentario,
+                'fecha', o.fecha
+            )
+        )
+        FROM opiniones o
+        LEFT JOIN usuarios eu ON o.estudiante_id = eu.id
+        WHERE o.profesor_id = p.id
+    ) AS opiniones
+FROM 
+    profesores p
+JOIN 
+    usuarios u ON p.usuarios_id = u.id
+GROUP BY 
+    p.id, 
+    u.nombre, 
+    u.apellidos, 
+    u.email, 
+    u.rol, 
+    u.foto, 
+    u.activo, 
+    p.precio_hora, 
+    p.localizacion, 
+    p.telefono, 
+    p.meses_experiencia, 
+    p.validado, 
+    p.sobre_mi;`);
   return result;
 }
 
@@ -62,7 +83,7 @@ async function insertProfesor({ usuario, profesor, materias }) {
   const usuarioId = usuarioResult.insertId;
 
   await pool.query(
-    "INSERT INTO profesores (usuarios_id, precio_hora, localizacion, telefono, meses_experiencia, validado, sobre_mi) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO profesores (usuarios_id, precio_hora, localizacion, telefono, meses_experiencia, validado) VALUES (?, ?, ?, ?, ?, ?)",
     [
       usuarioId,
       profesor.precio_hora,
@@ -70,7 +91,6 @@ async function insertProfesor({ usuario, profesor, materias }) {
       profesor.telefono,
       profesor.meses_experiencia,
       profesor.validado,
-      profesor.sobre_mi,
       0,
     ]
   );
@@ -101,14 +121,13 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
   );
 
   await pool.query(
-    "UPDATE profesores SET telefono = ?, precio_hora = ?, localizacion = ?, meses_experiencia = ?, validado = ?, sobre_mi = ? WHERE usuarios_id = ?",
+    "UPDATE profesores SET telefono = ?, precio_hora = ?, localizacion = ?, meses_experiencia = ?, validado = ? WHERE usuarios_id = ?",
     [
       profesor.telefono,
       profesor.precio_hora,
       profesor.localizacion,
       profesor.meses_experiencia,
       profesor.validado,
-      profesor.sobre_mi,
       profesorId,
     ]
   );
