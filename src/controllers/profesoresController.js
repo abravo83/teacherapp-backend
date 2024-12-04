@@ -6,6 +6,7 @@ const {
   validarDesvalidarProfesor,
   obtenerCorreosAdministradores,
   selectAllMateriasDeProfesor,
+  updateProfesorSobreMi,
 } = require("../models/profesorModel");
 const {
   enviarCorreo,
@@ -55,7 +56,8 @@ const registroProfesor = async (req, res, next) => {
 
     // Guardar la imagen solo si la inserción fue exitosa
     if (req.file) {
-      datos.usuario.foto = saveProfileImage(req.file);    }
+      datos.usuario.foto = saveProfileImage(req.file);
+    }
 
     const profesor = await selectProfesorById(profesorId);
 
@@ -77,8 +79,6 @@ const registroProfesor = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 const actualizarProfesor = async (req, res, next) => {
   try {
@@ -131,6 +131,22 @@ const validarDesvalidar = async (req, res, next) => {
   }
 };
 
+const actualizarProfesorSobreMi = async (req, res, next) => {
+  try {
+    let datos = req.body;
+    const [profesorActualizado] = await updateProfesorSobreMi(
+      req.params.id,
+      datos.sobre_mi
+    );
+    if (!profesorActualizado) {
+      return res.status(404).json({ message: "Profesor no encontrado" });
+    }
+    res.json(profesorActualizado);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   obtenerProfesores,
   obtenerProfesor,
@@ -138,4 +154,5 @@ module.exports = {
   registroProfesor,
   actualizarProfesor,
   validarDesvalidar,
+  actualizarProfesorSobreMi,
 };
