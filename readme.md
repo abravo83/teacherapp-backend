@@ -53,24 +53,30 @@ npm install
 
 ### 3. Configurar las variables de entorno
 
-# Configuración de la base de datos
+##### Configuración de la base de datos
+ ```plaintext
 DB_HOST_ADDRESS=localhost
 DB_USER=root
 DB_PASSWORD=tu_contraseña
 DB_PORT=3306
 DB_NAME=teacherapp
+ ```
 
-# Configuración del servidor
+##### Configuración del servidor
+ ```plaintext
 PORT=3000
 CLAVE=tu_clave_secreta_para_tokens
+ ```
 
-# Configuración del correo (OAuth2)
+#### Configuración del correo (OAuth2)
+ ```plaintext
 EMAIL_USER=tu_correo@gmail.com
 EMAIL_SERVICE=gmail
 CLIENT_ID=tu_client_id
 CLIENT_SECRET=tu_client_secret
 REDIRECT_URI=https://developers.google.com/oauthplayground
 REFRESH_TOKEN=tu_refresh_token
+ ```
 
 Nota: Se incluye un archivo example.env en el repositorio con la estructura básica de las variables de entorno.
 
