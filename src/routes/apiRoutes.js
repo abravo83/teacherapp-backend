@@ -8,5 +8,6 @@ router.use("/login", require("./api/apiLoginRoutes"));
 router.use("/opiniones", require("./api/apiOpinionesRoutes"));
 router.use("/inscripciones", require("./api/apiInscripcionesRoutes"));
 router.use("/mensajes", require("./api/apiMensajesRoutes"));
+router.use("/recuperarclave", require("./api/apiRecuperarclaveRoutes"));
 
 module.exports = router;
