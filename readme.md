@@ -1,8 +1,8 @@
 # TeacherApp Backend
 
-**TeacherApp API** es la API desarrollada para el proyecto final **TeacherApp**. 
+**TeacherApp Backend** es la API del proyecto final elaborado por el Grupo 1 del Máster FullStack Developer de la Universidad Internacional de la Rioja (UNIR). Es responsable de gestionar la lógica y los datos de la aplicación, ofreciendo funcionalidades como el registro y autenticación de usuarios, validación de profesores, interacción entre alumnos y profesores, y gestión de accesos según los roles de administrador, profesor y alumno.
 
-A continuación, se presenta la guía de instalación, configuración y uso del proyecto.
+A continuación, se presenta la guía de instalación, configuración y uso.
 
 
 ## Tabla de Contenidos
@@ -122,7 +122,7 @@ npm start
 El servidor estará disponible en http://localhost:3000 (o en el puerto configurado en el archivo .env).
 
 
-### Estructura del proyecto:
+## Estructura del proyecto:
 
    ```plaintext
 .
