@@ -123,6 +123,8 @@ El servidor estará disponible en http://localhost:3000 (o en el puerto configur
 
 
 ### Estructura del proyecto:
+
+   ```plaintext
 .
 ├── index.js               # Archivo principal de inicio
 ├── .env                   # Configuración de variables de entorno
@@ -134,21 +136,22 @@ El servidor estará disponible en http://localhost:3000 (o en el puerto configur
 ├── /config                # Configuración de la base de datos y otros servicios
 └── teacherapp.sql         # Archivo con la estructura y datos iniciales de la base de datos
 
+   ```
 
 ## Tecnologías Utilizadas
 
-### Backend
+##### Backend
 - [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
 - [MySQL2](https://www.npmjs.com/package/mysql2)
 - [JWT (jsonwebtoken)](https://www.npmjs.com/package/jsonwebtoken)
 - [Bcrypt.js](https://www.npmjs.com/package/bcryptjs)
 
-### Email y Autenticación OAuth2
+##### Email y Autenticación OAuth2
 - [Nodemailer](https://nodemailer.com/)
 - [Google APIs](https://developers.google.com/identity/protocols/oauth2)
 
-### Otras Herramientas
+##### Otras Herramientas
 - [dotenv](https://www.npmjs.com/package/dotenv) (gestión de variables de entorno)
 - [Multer](https://www.npmjs.com/package/multer) (manejo de archivos)
 - [Nodemon](https://www.npmjs.com/package/nodemon) (desarrollo en tiempo real)
