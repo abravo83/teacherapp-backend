@@ -38,14 +38,18 @@ Sigue los pasos a continuación para configurar el proyecto correctamente:
 
 Clona este repositorio en tu máquina local:
 
+```bash
 git clone https://github.com/abravo83/teacherapp-backend.git
 cd teacherapp-backend
+```
 
 ### 2. Instalar dependencias
 
 Ejecuta el siguiente comando para instalar las dependencias necesarias:
 
+```
 npm install
+```
 
 ### 3. Configurar las variables de entorno
 
@@ -96,7 +100,7 @@ Nota: Se incluye un archivo example.env en el repositorio con la estructura bás
 
    ```sql
    SHOW TABLES;
-   
+
 Esto mostrará las tablas creadas en la base de datos teacherapp.
 
 
@@ -104,8 +108,10 @@ Esto mostrará las tablas creadas en la base de datos teacherapp.
 
 Para iniciar el servidor en modo desarrollo:
 
+```
 npm run dev
 npm start
+```
 
 El servidor estará disponible en http://localhost:3000 (o en el puerto configurado en el archivo .env).
 
