@@ -49,16 +49,13 @@ const registroProfesor = async (req, res, next) => {
   try {
     let datos = JSON.parse(req.body.datos);
 
-    datos.usuario.password = await bcrypt.hash(datos.usuario.password, 8);
-
-    // Validar y realizar la inserción antes de procesar la imagen
-    const profesorId = await insertProfesor(datos);
-
-    // Guardar la imagen solo si la inserción fue exitosa
     if (req.file) {
       datos.usuario.foto = saveProfileImage(req.file);
     }
 
+    datos.usuario.password = await bcrypt.hash(datos.usuario.password, 8);
+
+    const profesorId = await insertProfesor(datos);
     const profesor = await selectProfesorById(profesorId);
 
     const correosAdministradores = await obtenerCorreosAdministradores();
@@ -69,16 +66,10 @@ const registroProfesor = async (req, res, next) => {
 
     res.json(profesor);
   } catch (error) {
-    // Si ocurre un error, asegurarse de que no se guarda la imagen
-    if (req.file) {
-      const fs = require("fs");
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.error("Error al eliminar la imagen temporal:", err);
-      });
-    }
     next(error);
   }
 };
+
 
 const actualizarProfesor = async (req, res, next) => {
   try {

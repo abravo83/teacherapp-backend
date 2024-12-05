@@ -40,9 +40,19 @@ async function updateAlumno(
 }
 
 
+const selectAlumnoByEmail = async (email) => {
+  const [rows] = await pool.query(
+    "SELECT id FROM usuarios WHERE email = ? AND rol = 'alumno'",
+    [email]
+  );
+  return rows.length > 0 ? rows[0] : null;
+};
+
+
 module.exports = {
   selectAlumnoById,
   insertAlumno,
   updateAlumno,
-  listarAlumnos
+  listarAlumnos, 
+  selectAlumnoByEmail
 };

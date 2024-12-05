@@ -3,6 +3,7 @@ const {
   insertAlumno,
   updateAlumno,
   listarAlumnos,
+  selectAlumnoByEmail
 } = require("../models/alumnoModel");
 
 const bcrypt = require("bcryptjs");
@@ -29,31 +30,32 @@ const obtenerAlumno = async (req, res, next) => {
     next(error);
   }
 };
+
+const fs = require("fs");
+
+
 const registroAlumno = async (req, res, next) => {
   try {
     let datos = JSON.parse(req.body.datos);
-
     datos.password = await bcrypt.hash(datos.password, 8);
 
-    const alumnoId = await insertAlumno(datos);
+    const alumnoExistente = await selectAlumnoByEmail(datos.email);
+    if (alumnoExistente) {
+      return res.status(409).json({ message: "El correo ya está registrado" });
+    }
 
     if (req.file) {
       datos.foto = saveProfileImage(req.file);
     }
 
+    const alumnoId = await insertAlumno(datos);
     const nuevoAlumno = await selectAlumnoById(alumnoId);
-
     res.status(201).json(nuevoAlumno);
   } catch (error) {
-    if (req.file) {
-      const fs = require("fs");
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.error("Error al eliminar la imagen temporal:", err);
-      });
-    }
     next(error);
   }
 };
+
 
 
 const actualizarAlumno = async (req, res, next) => {
