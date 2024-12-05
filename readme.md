@@ -1,6 +1,15 @@
 # TeacherApp Backend
 
-**TeacherApp Backend** es la API del proyecto final elaborado por el Grupo 1 del Máster FullStack Developer de la Universidad Internacional de la Rioja (UNIR). Es responsable de gestionar la lógica y los datos de la aplicación, ofreciendo funcionalidades como el registro y autenticación de usuarios, validación de profesores, interacción entre alumnos y profesores, y gestión de accesos según los roles de administrador, profesor y alumno.
+**TeacherApp Backend** es la API del proyecto final elaborado por el Grupo 1 del Máster FullStack Developer de la Universidad Internacional de la Rioja (UNIR). 
+
+Este backend gestiona la lógica y los datos de la aplicación, incluyendo:
+- Registro, activación y autenticación de usuarios.
+- Validación de profesores por administradores.
+- Interacción entre alumnos y profesores.
+- Gestión de accesos según roles: administrador, profesor y alumno.
+
+A continuación, se presenta la guía de instalación, configuración y uso.
+
 
 A continuación, se presenta la guía de instalación, configuración y uso.
 
