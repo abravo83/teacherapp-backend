@@ -11,9 +11,6 @@ Este backend gestiona la lógica y los datos de la aplicación, incluyendo:
 A continuación, se presenta la guía de instalación, configuración y uso.
 
 
-A continuación, se presenta la guía de instalación, configuración y uso.
-
-
 ## Tabla de Contenidos
 
 - [Requisitos Previos](#requisitos-previos)
