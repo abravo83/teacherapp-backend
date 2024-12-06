@@ -36,7 +36,13 @@ const saveProfileImage = (file) => {
   return bbddPath;
 };
 
+const deleteProfileImage = (filepath) => {
+  const fileSytemPath = path.join(__dirname, `../Public${filepath}`);
+  if (fs.existsSync(fileSytemPath)) fs.unlinkSync(fileSytemPath);
+};
+
 module.exports = {
   createToken,
   saveProfileImage,
+  deleteProfileImage,
 };

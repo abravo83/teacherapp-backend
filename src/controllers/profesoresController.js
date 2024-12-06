@@ -1,3 +1,8 @@
+const fs = require("node:fs");
+const path = require("node:path");
+const bcrypt = require("bcryptjs");
+
+const { saveProfileImage, deleteProfileImage } = require("../utils/helpers");
 const {
   insertProfesor,
   updateProfesor,
@@ -12,8 +17,6 @@ const {
   enviarCorreo,
   generarMensajeRegistroProfesor,
 } = require("../utils/emailService");
-const bcrypt = require("bcryptjs");
-const { saveProfileImage } = require("../utils/helpers");
 
 const obtenerProfesores = async (req, res, next) => {
   try {
@@ -46,20 +49,22 @@ const obtenerMateriasDeProfesor = async (req, res, next) => {
 };
 
 const registroProfesor = async (req, res, next) => {
+  let profesor;
+  let datos;
   try {
-    let datos = JSON.parse(req.body.datos);
+    datos = JSON.parse(req.body.datos);
 
     datos.usuario.password = await bcrypt.hash(datos.usuario.password, 8);
 
-    // Validar y realizar la inserción antes de procesar la imagen
-    const profesorId = await insertProfesor(datos);
-
-    // Guardar la imagen solo si la inserción fue exitosa
+    // Guardar la imagen y retornar el nombre de la ruta relativa para la inserción.
     if (req.file) {
       datos.usuario.foto = saveProfileImage(req.file);
     }
 
-    const profesor = await selectProfesorById(profesorId);
+    // Realiza la inserción del profesor
+    const profesorId = await insertProfesor(datos);
+
+    profesor = await selectProfesorById(profesorId);
 
     const correosAdministradores = await obtenerCorreosAdministradores();
     if (correosAdministradores.length > 0) {
@@ -69,23 +74,32 @@ const registroProfesor = async (req, res, next) => {
 
     res.json(profesor);
   } catch (error) {
-    // Si ocurre un error, asegurarse de que no se guarda la imagen
-    if (req.file) {
-      const fs = require("fs");
+    // Si ocurre un error, y no se ha insertado el profesor en la BD borramos la NUEVA imagen del perfil.
+    if (!profesor || !profesor.id) {
+      deleteProfileImage(datos.usuario.foto);
+    }
+
+    // En todo caso comprobamos si sigue existiendo la imagen temporal y la eliminamos también.
+    if (fs.existsSync(req.file.path)) {
       fs.unlink(req.file.path, (err) => {
         if (err) console.error("Error al eliminar la imagen temporal:", err);
       });
     }
+
     next(error);
   }
 };
 
 const actualizarProfesor = async (req, res, next) => {
+  let profesorActualizado;
+  let oldProfesorData;
+  let datos;
   try {
-    let datos = JSON.parse(req.body.datos);
+    datos = JSON.parse(req.body.datos);
 
     if (req.file) {
       datos.usuario.foto = saveProfileImage(req.file);
+      oldProfesorData = await selectProfesorById(req.params.id);
     }
 
     if (datos.usuario.password) {
@@ -98,12 +112,29 @@ const actualizarProfesor = async (req, res, next) => {
       datos.usuario.foto = req.user.foto;
     }
 
-    const profesorActualizado = await updateProfesor(req.params.id, datos);
+    profesorActualizado = await updateProfesor(req.params.id, datos);
+
+    if (oldProfesorData?.usuario?.foto) {
+      deleteProfileImage(oldProfesorData.usuario.foto);
+    }
+
     if (!profesorActualizado) {
       return res.status(404).json({ message: "Profesor no encontrado" });
     }
     res.json(await selectProfesorById(profesorActualizado));
   } catch (error) {
+    // Si ocurre un error, y no se ha actualizado el profesor en la BD borramos la NUEVA imagen del perfil.
+    if (!profesorActualizado || !profesorActualizado.id) {
+      deleteProfileImage(datos.usuario.foto);
+    }
+
+    // Si sigue existiendo la imagen temporal la eliminamos.
+    if (fs.existsSync(req.file.path)) {
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.error("Error al eliminar la imagen temporal:", err);
+      });
+    }
+
     next(error);
   }
 };

@@ -7,7 +7,7 @@ const {
 
 const bcrypt = require("bcryptjs");
 
-const { saveProfileImage } = require("../utils/helpers");
+const { saveProfileImage, deleteProfileImage } = require("../utils/helpers");
 
 const obtenerAlumnos = async (req, res, next) => {
   try {
@@ -30,23 +30,28 @@ const obtenerAlumno = async (req, res, next) => {
   }
 };
 const registroAlumno = async (req, res, next) => {
+  let datos;
   try {
-    let datos = JSON.parse(req.body.datos);
+    datos = JSON.parse(req.body.datos);
 
     datos.password = await bcrypt.hash(datos.password, 8);
-
-    const alumnoId = await insertAlumno(datos);
 
     if (req.file) {
       datos.foto = saveProfileImage(req.file);
     }
 
+    const alumnoId = await insertAlumno(datos);
     const nuevoAlumno = await selectAlumnoById(alumnoId);
 
     res.status(201).json(nuevoAlumno);
   } catch (error) {
-    if (req.file) {
-      const fs = require("fs");
+    // Si ocurre un error, y no se ha insertado el profesor en la BD borramos la NUEVA imagen del perfil.
+    if (!nuevoAlumno || !nuevoAlumno.id) {
+      if (datos.foto) deleteProfileImage(datos.foto);
+    }
+
+    // En todo caso comprobamos si sigue existiendo la imagen temporal y la eliminamos también.
+    if (fs.existsSync(req.file.path)) {
       fs.unlink(req.file.path, (err) => {
         if (err) console.error("Error al eliminar la imagen temporal:", err);
       });
@@ -55,14 +60,17 @@ const registroAlumno = async (req, res, next) => {
   }
 };
 
-
 const actualizarAlumno = async (req, res, next) => {
+  let datos;
+  let datosAntiguosDelAlumno;
+  let alumnoActualizado;
   try {
-    let datos = JSON.parse(req.body.datos);
+    datos = JSON.parse(req.body.datos);
 
     // Si recibimos archivo, lo guardamos en la carpeta y sustituimos el nombre.
     if (req.file) {
       datos.foto = saveProfileImage(req.file);
+      datosAntiguosDelAlumno = await selectAlumnoById(req.params.id);
     }
 
     // Si se recibe una nueva contraseña, la encriptamos, si no recuperamos la de la BD
@@ -78,12 +86,29 @@ const actualizarAlumno = async (req, res, next) => {
     }
 
     const alumnoActualizadoId = await updateAlumno(req.params.id, datos);
-    const alumnoActualizado = await selectAlumnoById(alumnoActualizadoId);
+
+    if (datosAntiguosDelAlumno?.foto) {
+      deleteProfileImage(datosAntiguosDelAlumno.foto);
+    }
+
+    alumnoActualizado = await selectAlumnoById(alumnoActualizadoId);
     if (!alumnoActualizado) {
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
     res.json(alumnoActualizado);
   } catch (error) {
+    // Si ocurre un error, y no se ha actualizado el profesor en la BD borramos la NUEVA imagen del perfil.
+    if (!alumnoActualizado || !alumnoActualizado.id) {
+      if (datos.foto) deleteProfileImage(datos.foto);
+    }
+
+    // Si sigue existiendo la imagen temporal la eliminamos.
+    if (fs.existsSync(req.file.path)) {
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.error("Error al eliminar la imagen temporal:", err);
+      });
+    }
+
     next(error);
   }
 };
