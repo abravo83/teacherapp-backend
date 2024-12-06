@@ -3,6 +3,7 @@ const {
   insertAlumno,
   updateAlumno,
   listarAlumnos,
+  selectAlumnoByEmail,
 } = require("../models/alumnoModel");
 
 const bcrypt = require("bcryptjs");
@@ -29,6 +30,9 @@ const obtenerAlumno = async (req, res, next) => {
     next(error);
   }
 };
+
+const fs = require("fs");
+
 const registroAlumno = async (req, res, next) => {
   let datos;
   try {
@@ -36,13 +40,17 @@ const registroAlumno = async (req, res, next) => {
 
     datos.password = await bcrypt.hash(datos.password, 8);
 
+    const alumnoExistente = await selectAlumnoByEmail(datos.email);
+    if (alumnoExistente) {
+      return res.status(409).json({ message: "El correo ya está registrado" });
+    }
+
     if (req.file) {
       datos.foto = saveProfileImage(req.file);
     }
 
     const alumnoId = await insertAlumno(datos);
     const nuevoAlumno = await selectAlumnoById(alumnoId);
-
     res.status(201).json(nuevoAlumno);
   } catch (error) {
     // Si ocurre un error, y no se ha insertado el profesor en la BD borramos la NUEVA imagen del perfil.

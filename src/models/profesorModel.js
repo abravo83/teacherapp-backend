@@ -93,7 +93,6 @@ async function insertProfesor({ usuario, profesor, materias }) {
       profesor.localizacion,
       profesor.telefono,
       profesor.meses_experiencia,
-      profesor.validado,
       0,
     ]
   );
@@ -139,12 +138,15 @@ async function updateProfesor(profesorId, { usuario, profesor, materias }) {
     profesorId,
   ]);
 
+
   if (materias && materias.length) {
+
     const values = materias
       .filter((materiaId) => materiaId !== null && materiaId !== undefined)
       .map((materiaId) => [profesorId, materiaId]);
 
     if (values.length) {
+
       await pool.query(
         "INSERT INTO materias_profesores (usuarios_id, Materias_id) VALUES ?",
         [values]
