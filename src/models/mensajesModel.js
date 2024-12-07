@@ -47,8 +47,7 @@ ORDER BY id ASC;`,
     [emisor_id, destinatario_id, destinatario_id, emisor_id]
   );
   if (result.length === 0) {
-    console.log("No se encontraron mensajes entre los usuarios.");
-    return []; // Puedes devolver un array vacío si no se encuentran mensajes
+    return []; //devolvera array vacío si no se encuentran mensajes
   }
   return result; // Devuelve los mensajes
 }
