@@ -12,6 +12,7 @@ async function selectAllMateriasDeProfesor() {
     p.id,
     u.nombre AS nombre,
     u.apellidos AS apellidos,
+    u.id AS usuario_id,
     u.email,
     u.rol,
     u.foto,
@@ -47,7 +48,7 @@ async function selectAllMateriasDeProfesor() {
         )
         FROM opiniones o
         LEFT JOIN usuarios eu ON o.estudiante_id = eu.id
-        WHERE o.profesor_id = p.id
+        WHERE o.profesor_id = u.id
     ) AS opiniones
 FROM 
     profesores p
