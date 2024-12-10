@@ -1,38 +1,35 @@
 const nodemailer = require("nodemailer");
-const { OAuth2Client } = require("google-auth-library");
 const { google } = require("googleapis");
 require("dotenv").config();
 
-const P_CLIENT_ID = process.env.P_CLIENT_ID;
-const P_CLIENT_SECRET = process.env.P_CLIENT_SECRET;
-const P_REDIRECT_URI = process.env.P_REDIRECT_URI;
-const P_REFRESH_TOKEN = process.env.P_REFRESH_TOKEN;
-const P_EMAIL_USER = process.env.P_EMAIL_USER;
-const P_BASE_URL = process.env.FRONTEND_BASE_URL || "http://localhost:4200";
-
-//console.log("Frontend Base URL:", P_BASE_URL);
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+const EMAIL_USER = process.env.EMAIL_USER;
+const BASE_URL = process.env.FRONTEND_BASE_URL;
 
 const oAuth2Client = new google.auth.OAuth2(
-  P_CLIENT_ID,
-  P_CLIENT_SECRET,
-  P_REDIRECT_URI
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
 );
-oAuth2Client.setCredentials({ refresh_token: P_REFRESH_TOKEN });
+oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 async function enviarCorreoRestablecimiento(email, asunto, codigo) {
   try {
     //console.log("en funcion envio correo:", codigo);
-    const resetUrl = `${P_BASE_URL}/password-recovery?code=${codigo}`;
-    console.log(resetUrl);
+    const resetUrl = `${BASE_URL}/password-recovery?code=${codigo}`;
     const accessToken = await oAuth2Client.getAccessToken();
+
     const transporter = nodemailer.createTransport({
       service: process.env.EMAIL_SERVICE,
       auth: {
         type: "OAuth2",
-        user: P_EMAIL_USER,
-        clientId: P_CLIENT_ID,
-        clientSecret: P_CLIENT_SECRET,
-        refreshToken: P_REFRESH_TOKEN,
+        user: EMAIL_USER,
+        clientId: CLIENT_ID,
+        clientSecret: CLIENT_SECRET,
+        refreshToken: REFRESH_TOKEN,
         accessToken: accessToken.token,
       },
     });
@@ -44,26 +41,15 @@ async function enviarCorreoRestablecimiento(email, asunto, codigo) {
         <p>Este enlace expirará en 1 hora.</p>
       `;
     const info = await transporter.sendMail({
-      from: `"TeacherApp" <${P_EMAIL_USER}>`,
+      from: `"TeacherApp" <${EMAIL_USER}>`,
       to: email,
       subject: asunto,
       text: `Haz clic en el siguiente enlace para restablecer tu contraseña:`,
       html: contenido,
     });
-    //console.log("Correo enviado: %s", info.messageId);
   } catch (error) {
     console.error("Error al enviar correo: ", error);
   }
 }
-
-/* 
-async function verifyAccessToken() {
-  try {
-    const token = await oAuth2Client.getAccessToken();
-    console.log("Access Token generado correctamente:", token);
-  } catch (error) {
-    console.error("Error al generar Access Token:", error);
-  }
-} */
 
 module.exports = { enviarCorreoRestablecimiento };
