@@ -22,15 +22,23 @@ async function enviarCorreoRestablecimiento(email, asunto, codigo) {
     const resetUrl = `${BASE_URL}/password-recovery?code=${codigo}`;
     const accessToken = await oAuth2Client.getAccessToken();
 
+    // const transporter = nodemailer.createTransport({
+    //   service: process.env.EMAIL_SERVICE,
+    //   auth: {
+    //     type: "OAuth2",
+    //     user: EMAIL_USER,
+    //     clientId: CLIENT_ID,
+    //     clientSecret: CLIENT_SECRET,
+    //     refreshToken: REFRESH_TOKEN,
+    //     accessToken: accessToken.token,
+    //   },
+    // });
+
     const transporter = nodemailer.createTransport({
       service: process.env.EMAIL_SERVICE,
       auth: {
-        type: "OAuth2",
         user: EMAIL_USER,
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken: accessToken.token,
+        pass: process.env.APP_PASS,
       },
     });
 
